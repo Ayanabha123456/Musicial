@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blog Page</title>
+  <!-- Add icon library -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <style>
+   .Profifle-Pic{
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 40px;
+    margin-right: 40px;
+   }
+
+   /* .input-group{
+    margin-top: 50px;
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-bottom: 20px;
+   } */
+
+   .Post-card{
+    margin-top: 50px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 20px;
+   }
+
+   .card-img{
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+   }
+
+   .btn-group-vertical{
+    margin-top: 50px;
+   }
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- stuff in the first column gose here -->
+      <div class="col-md-3 col-fixed border">
+        <div class="card Profifle-Pic"><img src="https://via.placeholder.com/200" alt="Profile Picture" class="Profile-pic"></div>
+        <div class="btn-group-vertical">
+         <a href="#" class="btn btn-primary">Home</a>
+         <a href="#" class="btn btn-primary">Photos</a>
+         <a href="#" class="btn btn-primary">Music</a>
+         <a href="#" class="btn btn-primary">Friends</a>
+         <a href="#" class="btn btn-primary">Trash</a>
+        </div>
+      </div>
+        
+      <!-- stuff in the second column goes here -->
+      <div class="col-md-9 col-scroll">
+        <!-- search bar function -->
+        <div class="input-group">
+          <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+          <button type="button" class="btn btn-outline-primary">search</button>
+        </div>
+        <!-- Psot function, put all the post and caption in a Card -->
+        <div class="card Post-card">
+          <!-- the image here should be Responsive to adapt the card size -->
+          <img src="https://via.placeholder.com/200" class="img-fluid card-img" alt="Responsive image Post-img">
+          <div class="card-img-overlay">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <p class="card-text">Last updated 3 mins ago</p>
+            <i onclick="myFunction(this)" class="fa fa-thumbs-up" size="10px"></i>
+            <script>
+              // toggle thumb up and down
+              function myFunction(x) {
+                x.classList.toggle("fa-thumbs-down");
+              }
+              </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
