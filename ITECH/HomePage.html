@@ -3,32 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <title>Blog Page</title>
-  <!-- Add icon library -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <style>
-   .Profifle-Pic{
-    display: block;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    margin-left: 40px;
-    margin-right: 40px;
+
+   .rounded-circle{
+    margin-top: 50px;
+    margin-bottom: 10px;
    }
 
-   /* .input-group{
-    margin-top: 50px;
-    margin-left: 200px;
-    margin-right: 200px;
-    margin-bottom: 20px;
-   } */
+   .fw-bold{
+    text-align: center;
+    margin-bottom: 50px;
+   }
 
    .Post-card{
     margin-top: 50px;
-    margin-left: 100px;
-    margin-right: 100px;
+    margin-left: 150px;
+    margin-right: 150px;
     margin-bottom: 20px;
    }
 
@@ -41,6 +36,10 @@
    .btn-group-vertical{
     margin-top: 50px;
    }
+
+   .p-2{
+    margin-top: 100px;
+   }
   </style>
 </head>
 <body>
@@ -48,23 +47,32 @@
     <div class="row">
       <!-- stuff in the first column gose here -->
       <div class="col-md-3 col-fixed border">
-        <div class="card Profifle-Pic"><img src="https://via.placeholder.com/200" alt="Profile Picture" class="Profile-pic"></div>
-        <div class="btn-group-vertical">
-         <a href="#" class="btn btn-primary">Home</a>
-         <a href="#" class="btn btn-primary">Photos</a>
-         <a href="#" class="btn btn-primary">Music</a>
-         <a href="#" class="btn btn-primary">Friends</a>
-         <a href="#" class="btn btn-primary">Trash</a>
+        <img src="https://via.placeholder.com/200" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block">
+        <p class="fw-bold">Username</p>
+        <!-- nav buttons under the Profile-pic -->
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</a>
+          <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">Profile</a>
+          <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">Messages</a>
+          <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+        </div>
+        <div class="tab-content" id="v-pills-tabContent">
+          <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
+          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
+          <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
+          <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
         </div>
       </div>
         
       <!-- stuff in the second column goes here -->
       <div class="col-md-9 col-scroll">
         <!-- search bar function -->
-        <div class="input-group">
-          <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-          <button type="button" class="btn btn-outline-primary">search</button>
-        </div>
+        <nav class="navbar navbar-light bg-light">
+          <form class="form-inline">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </nav>
         <!-- Psot function, put all the post and caption in a Card -->
         <div class="card Post-card">
           <!-- the image here should be Responsive to adapt the card size -->
@@ -73,13 +81,13 @@
             <h5 class="card-title">Card title</h5>
             <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
             <p class="card-text">Last updated 3 mins ago</p>
-            <i onclick="myFunction(this)" class="fa fa-thumbs-up" size="10px"></i>
-            <script>
-              // toggle thumb up and down
-              function myFunction(x) {
-                x.classList.toggle("fa-thumbs-down");
-              }
-              </script>
+            <div class="d-flex flex-row-reverse">
+              <!-- p-2 is to add padding to the bottons -->
+              <div class="p-2"> 
+                <button class="btn btn-outline-primary"><i class="bi bi-hand-thumbs-up"></i> Like</button>
+                <button class="btn btn-outline-primary"><i class="bi bi-chat-dots"></i> Comment</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
