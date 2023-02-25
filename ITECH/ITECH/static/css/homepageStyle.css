@@ -1,0 +1,33 @@
+body
+            .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            }
+            .card {
+            width: 500px; /* increase the width of the card */
+            padding: 100px;  /*add padding to the card*/ 
+            height: 650px;
+            }
+
+            .form-group {
+            margin-top:60px;   
+            }
+            
+		    form h2{
+			    margin-top: 20px;
+		    }
+    
+            /*-- centre the button-->*/
+            button{
+                margin-right:auto;
+                margin-left:25px;
+                text-align:center；
+            }
+
+            img{
+                margin-top: 40px;
+                margin-right: auto;
+                margin-left: auto;
+            }
