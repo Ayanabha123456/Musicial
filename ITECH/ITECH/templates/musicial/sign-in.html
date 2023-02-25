@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 	<head>
@@ -8,31 +9,9 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 		
 	<!-- Referencebootstrap css -->
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+	<!-- External CSS-->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/signinPageStyle.css' %}"/>
 	
-    <!-- Set Form -->
-	    <style>
-            body
-            .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            }
-
-            
-            .card {
-            width: 500px; /* increase the width of the card */
-            padding: 100px; /* add padding to the card */
-            }
-            .form-group {
-            margin-bottom: 40px; /* increase the margin between form fields */
-            }
-            
-		    form h2{
-			    margin-bottom: 30px;
-		    }
-        </style>
 	</head>
 	<body>
         <div class="container">

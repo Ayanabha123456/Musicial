@@ -1,3 +1,4 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,22 +7,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-  <style>
-    body 
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .card {
-      width: 500px; /* increase the width of the card */
-      padding: 100px; /* add padding to the card */
-    }
-    .form-group {
-      margin-bottom: 40px; /* increase the margin between form fields */
-    }
-  </style>
+  <!-- External CSS-->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/registerPageStyle.css' %}"/>
 </head>
 <body>
   <div class="container">
