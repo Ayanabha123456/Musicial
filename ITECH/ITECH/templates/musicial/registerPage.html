@@ -1,0 +1,53 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>User Registration</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- External CSS-->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/registerPageStyle.css' %}"/>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+        <div class="card-body">
+          <h2 class="card-title text-center">User Registration</h2>
+    <form id="register-form" method="POST" action="register" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="username">username:</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter name" name='username' required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" placeholder="Enter email" name='email' required>
+      </div>
+      <div class="form-group">
+        <label for="age">Age:</label>
+        <input type="number" class="form-control" id="age" placeholder="Enter age" min="18" max="90" name='age' required>
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender:</label><br>
+        <select class="form-select" name='gender'>
+          <option selected value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Transgender">Transgender</option>
+          <option value="Nonbinary">Non-binary</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="picture">Select a profile image:</label>
+        <input type="file" class="form-control" id="image" placeholder="Upload pic" name='picture' required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter password" name='password' required>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+</body>
+</html>
