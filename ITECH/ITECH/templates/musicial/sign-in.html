@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>User Sign-in</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+		
+	<!-- Referencebootstrap css -->
+	<!-- External CSS-->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/signinPageStyle.css' %}"/>
+	
+	</head>
+	<body>
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                <h2 class="card-title text-center">Sign-in</h2>
+		<form id="signin-form" method="POST" action="signin">
+			{% csrf_token %}
+            <!-- name fleid -->
+		  <div class="form-group">
+            <label for="username">Username:</label>
+		    <input type="text" class="form-control" id="name" placeholder="Enter name" name='username' required>
+		  </div>
+            
+            <!-- password fleid-->
+		  <div class="form-group">
+            <label for="password">Password:</label>
+		    <input type="password" class="form-control" id="password" placeholder="Enter password" name='password' required>
+		  </div>
+
+
+            <!-- “remember me”prompt-->
+		  <div class="form-group form-check">
+		    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+		    <label class="form-check-label" for="exampleCheck1">Remember me</label>
+		  </div>
+
+		  <button type="submit" class="btn btn-primary">Sign In</Inp></button>
+		 
+		</form>
+        <div>
+    </body>   
+</html>
