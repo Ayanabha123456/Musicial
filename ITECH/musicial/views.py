@@ -77,3 +77,7 @@ def userCreatePostPage(request):
 def userSocialPage(request):
     return render(request,'musicial/socialPage.html')
 
+def userProfilePage(request):
+    return render(request,'musicial/ProfilePage.html')
+
+

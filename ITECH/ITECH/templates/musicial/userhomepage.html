@@ -25,6 +25,8 @@
           hey there partner!
           {% endif %}
         </p>
+
+
         <!-- nav buttons under the Profile-pic -->
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
           <a class="nav-link active" href="landing" aria-selected="true">Home</a>
@@ -33,12 +35,6 @@
           <a class="nav-link" href="social" aria-selected="false">Social</a>
           <a class="nav-link" href="playlist" aria-selected="false">Playlist</a>
           <a class="nav-link" href="logout" aria-selected="false">Logout</a>
-        </div>
-        <div class="tab-content" id="v-pills-tabContent">
-          <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">...</div>
-          <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">...</div>
-          <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">...</div>
-          <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">...</div>
         </div>
       </div>
         
@@ -51,71 +47,24 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
         </nav>
-        <!-- Psot function, put all the post and caption in a Card -->
-        <div class="card Post-card">
-          <!-- the image here should be Responsive to adapt the card size -->
-          <img src="https://via.placeholder.com/200" class="img-fluid card-img" alt="Responsive image Post-img">
-          <div class="card-img-overlay">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text">Last updated 3 mins ago</p>
-            <div class="d-flex flex-row-reverse">
-              <!-- p-2 is to add padding to the bottons -->
-              <div class="p-2"> 
-                <button class="btn btn-outline-primary"><i class="bi bi-hand-thumbs-up"></i> Like</button>
-                <button class="btn btn-outline-primary"><i class="bi bi-chat-dots"></i> Comment</button>
-              </div>
+
+        <!-- New type of post Card -->
+        <div class="card mb-3 Post-card mx-auto">
+          <div class="card-body">
+            <h5 class="card-title">Username of the poster</h5>
+            <p class="card-text"><small class="text-muted">Location and time</small></p>
+          </div>
+          <img src="https://via.placeholder.com/200" class="card-img-top .img-fluid" alt="...">
+          <div class="card-body">
+            <p class="card-text">Caption of the card</p>
+            <div class="p-2"> 
+              <button class="btn btn-outline-primary"><i class="bi bi-hand-thumbs-up"></i> Like</button>
+              <button class="btn btn-outline-primary"><i class="bi bi-chat-dots"></i> Comment</button>
             </div>
           </div>
         </div>
-        <div class="card Post-card">
-          <!-- the image here should be Responsive to adapt the card size -->
-          <img src="https://via.placeholder.com/200" class="img-fluid card-img" alt="Responsive image Post-img">
-          <div class="card-img-overlay">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text">Last updated 3 mins ago</p>
-            <div class="d-flex flex-row-reverse">
-              <!-- p-2 is to add padding to the bottons -->
-              <div class="p-2"> 
-                <button class="btn btn-outline-primary"><i class="bi bi-hand-thumbs-up"></i> Like</button>
-                <button class="btn btn-outline-primary"><i class="bi bi-chat-dots"></i> Comment</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card Post-card">
-          <!-- the image here should be Responsive to adapt the card size -->
-          <img src="https://via.placeholder.com/200" class="img-fluid card-img" alt="Responsive image Post-img">
-          <div class="card-img-overlay">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text">Last updated 3 mins ago</p>
-            <div class="d-flex flex-row-reverse">
-              <!-- p-2 is to add padding to the bottons -->
-              <div class="p-2"> 
-                <button class="btn btn-outline-primary"><i class="bi bi-hand-thumbs-up"></i> Like</button>
-                <button class="btn btn-outline-primary"><i class="bi bi-chat-dots"></i> Comment</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card Post-card">
-          <!-- the image here should be Responsive to adapt the card size -->
-          <img src="https://via.placeholder.com/200" class="img-fluid card-img" alt="Responsive image Post-img">
-          <div class="card-img-overlay">
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text">Last updated 3 mins ago</p>
-            <div class="d-flex flex-row-reverse">
-              <!-- p-2 is to add padding to the bottons -->
-              <div class="p-2"> 
-                <button class="btn btn-outline-primary"><i class="bi bi-hand-thumbs-up"></i> Like</button>
-                <button class="btn btn-outline-primary"><i class="bi bi-chat-dots"></i> Comment</button>
-              </div>
-            </div>
-          </div>
-        </div>
+
+
       </div>
     </div>
   </div>
