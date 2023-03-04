@@ -1,0 +1,11 @@
+{% extends 'base.html'%}
+
+{% block body_block %}
+<h1> Photos </h1>
+{% for photo in photod %}
+	<div class ="photo">
+		<h2>{{photo.caption}}</h2>
+		<img src= "{{ photo.image.url }}" alt="{{ photo.caption}}">
+	</div>
+{% endfor %}
+{% endblock %}

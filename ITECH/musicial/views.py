@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
 from musicial.forms import UserForm, UserProfileForm
+from .models import photo
 # Create your views here.
 
 def index(request):
@@ -53,3 +54,7 @@ def registerPage(request):
 
 def userHomepage(request):
     return render(request,'musicial/userhomepage.html')
+
+def createPhotoPage(request):
+    photos=photo.objects.all()
+    return render(request, 'musicial/photo.html')

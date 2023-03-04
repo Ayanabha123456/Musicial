@@ -13,5 +13,28 @@ class UserProfile(models.Model):
         return self.user.username
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=128,unique=True)
+    views = models.IntegerField(default=0)
+    likes = models.IntegerField(default=0)
+    slug = models.SlugField(unique=True)
+    
+    class Meta:
+        app_label = 'musicial'
+        
+        
+class photo(models.Model):  
+    #This image field allow th user to upload and store the image file, the directory 
+    #specifies where the uploaded photos will be stored
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='photos/')
+    caption = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        app_label ='musicial'
+    
+    def __str__(self):
+        return self.caption
 
 #any form field validators
