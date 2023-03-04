@@ -12,6 +12,12 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class FriendProfile(models.Model):
+    user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name='target_user')
+    friend = models.ManyToManyField(UserProfile,related_name='target_friend')
+
+    def __str__(self):
+        return self.user.user.username
 
 
 #any form field validators
