@@ -8,4 +8,6 @@ urlpatterns = [
     path('signin',views.signInPage,name='signin'),
     path('register',views.registerPage,name='register'),
     path('landing',views.userHomepage,name='landing'),
+    path('create-post',views.userCreatePostPage,name='create-post'),
+    path('social',views.userSocialPage,name='social')
 ]
