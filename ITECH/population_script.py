@@ -33,7 +33,7 @@ def populate():
          'password':'Glasgow24',
          'age':23,
          'gender':'Male',
-         'picture':'profile_images/music_test_profile.jpg'}
+         'picture':'profile_images/music_test_profile.jpg'},
     ]
 
     u1, u2, u3, u4, u5 = User.objects.get(username='Ayanabha'), User.objects.get(username='Jun'), User.objects.get(username='Vivian'),User.objects.get(username='Borui'),User.objects.get(username='Xinhong')
