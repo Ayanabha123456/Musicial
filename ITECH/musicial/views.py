@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login
-from musicial.forms import UserForm, UserProfileForm
-<<<<<<< HEAD
-from .models import photo
-=======
+from musicial.forms import UserForm, UserProfileForm, ImageForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
-from musicial.models import UserProfile
->>>>>>> origin/main
+from musicial.models import UserProfile, MyImage
+from django.urls import reverse
 # Create your views here.
 
 def index(request):
@@ -75,11 +72,6 @@ def registerPage(request):
 def userHomepage(request):
     return render(request,'musicial/userhomepage.html')
 
-<<<<<<< HEAD
-def createPhotoPage(request):
-    photos=photo.objects.all()
-    return render(request, 'musicial/photo.html')
-=======
 def userCreatePostPage(request):
     return render(request,'musicial/createPage.html')
 
@@ -89,5 +81,15 @@ def userSocialPage(request):
 def userProfilePage(request):
     return render(request,'musicial/ProfilePage.html')
 
+def upload_file(request):
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+           form.save()
+           return redirect('success')
+       #Do something with the uploaded file
+    else:
+           form = ImageForm()  
+    return render(request,'musicial/createPage.html')
 
->>>>>>> origin/main
+

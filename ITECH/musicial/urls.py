@@ -10,16 +10,8 @@ urlpatterns = [
     path('signin',views.signInPage,name='signin'),
     path('register',views.registerPage,name='register'),
     path('landing',views.userHomepage,name='landing'),
-<<<<<<< HEAD
-    path('createPhoto', views.createPhotoPage,name='createPhoto'),
-    
-]
-
-#server uplaod media files
-urlpatterns+= static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
-=======
     path('create-post',views.userCreatePostPage,name='create-post'),
     path('social',views.userSocialPage,name='social'),
-    path('profile',views.userProfilePage,name='profile')
+    path('profile',views.userProfilePage,name='profile'),
+    path('upload_file', views.upload_file,name='create-post'),
 ]
->>>>>>> origin/main

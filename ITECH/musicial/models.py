@@ -29,18 +29,8 @@ class Category(models.Model):
         app_label = 'musicial'
         
         
-class photo(models.Model):  
-    #This image field allow th user to upload and store the image file, the directory 
-    #specifies where the uploaded photos will be stored
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='photos/')
-    caption = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        app_label ='musicial'
-    
-    def __str__(self):
-        return self.caption
+class MyImage(models.Model):
+    name = models.CharField(max_length=100)
+    image_file=models.ImageField(upload_to='images/')
 
 #any form field validators

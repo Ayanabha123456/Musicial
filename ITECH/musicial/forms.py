@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from musicial.models import UserProfile
+from musicial.models import UserProfile,MyImage
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -11,3 +11,8 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = ('age','gender','picture')
+        
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = MyImage 
+        fields=('name', 'image_file',)
