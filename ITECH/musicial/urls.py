@@ -10,5 +10,6 @@ urlpatterns = [
     path('landing',views.userHomepage,name='landing'),
     path('create-post',views.userCreatePostPage,name='create-post'),
     path('social',views.userSocialPage,name='social'),
-    path('profile',views.userProfilePage,name='profile')
+    path('profile',views.userProfilePage,name='profile'),
+    path('songs',views.songPage,name='songs')
 ]
