@@ -31,7 +31,7 @@ SECRET_KEY = 'v9g!f1v%bq$s9s!+6ui31@39rl1$$qy^)p39$1uq@#ll^db3!a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] #need to change to our website url later
 
 
 # Application definition
@@ -117,12 +117,17 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
+
+
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 STATICFILES_DIRS = [STATIC_DIR, ]
 STATIC_URL = '/static/'
+
+
+DATE_INPUT_FORMATS = ["%D, %M %j, %Y"]

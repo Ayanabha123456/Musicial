@@ -11,5 +11,6 @@ urlpatterns = [
     path('create-post',views.userCreatePostPage,name='create-post'),
     path('social',views.userSocialPage,name='social'),
     path('profile',views.userProfilePage,name='profile'),
-    path('songs',views.songPage,name='songs')
+    path('songs',views.songPage,name='songs'),
+    path('playlist',views.userPlaylistPage,name='playlist')
 ]

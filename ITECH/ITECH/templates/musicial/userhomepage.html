@@ -41,33 +41,51 @@
         
       <!-- stuff in the second column goes here -->
       <div class="col-md-9 col-scroll">
-        <!-- search bar function -->
-        <nav class="navbar navbar-light bg-light">
-          <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </nav>
-
         <!-- New type of post Card -->
+        {% for post in posts %}
         <div class="card mb-3 Post-card mx-auto">
           <div class="card-body">
-            <h5 class="card-title">Username of the poster</h5>
-            <p class="card-text"><small class="text-muted">Location and time</small></p>
+            <h5 class="card-title">{{ post.username }}</h5>
+            <p class="card-text"><small class="text-muted">{{ post.time }}</small></p>
           </div>
-          <img src="https://via.placeholder.com/200" class="card-img-top .img-fluid" alt="...">
+          <img src="{{ post.picture.url }}">
           <div class="card-body">
-            <p class="card-text">Caption of the card</p>
-            <div class="p-2"> 
-              <button class="btn btn-outline-primary"><i class="bi bi-hand-thumbs-up"></i> Like</button>
+            <p class="card-text">{{ post.caption }} </p>
+            <div class="p-2">
+              
+      
+              <button class="btn btn-outline-primary likes" name="likes" value="{{ post.id }}" ><i class="bi bi-hand-thumbs-up"></i> Like</button>
+              <p id="likes{{ post.id }}">{{ post.likes }}</p>
               <button class="btn btn-outline-primary"><i class="bi bi-chat-dots"></i> Comment</button>
+            
+            
             </div>
           </div>
         </div>
+        {% endfor %}
 
 
       </div>
     </div>
   </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script type="text/javascript">
+    $('.likes').click(function(){
+      var pic_id = $(this).attr("value");
+      $.ajax(
+        {
+          type:"POST",
+          url:"landing",
+          data:{
+            'picture_id':pic_id
+          },
+          success: function(data)
+          {
+            $('#likes'+pic_id).text(data['likes'])
+          }
+        }
+      )
+    });
+  </script>
 </body>
 </html>

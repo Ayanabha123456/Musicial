@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login
 from musicial.forms import UserForm, UserProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
-from musicial.models import UserProfile
+from musicial.models import UserProfile, FriendProfile, Post
+from django.views.decorators.csrf import csrf_exempt
 import base64
 import requests
 from datetime import date
@@ -71,8 +72,32 @@ def registerPage(request):
     else:
         return render(request,'musicial/registerPage.html')
 
+@csrf_exempt
 def userHomepage(request):
-    return render(request,'musicial/userhomepage.html')
+    if request.method == 'POST':
+        picture_id = request.POST['picture_id']
+        print('Got ',picture_id)
+        post = Post.objects.get(id=picture_id)
+        post.likes.add(UserProfile.objects.get(user=request.user))
+        return JsonResponse({'likes':str(post.total_likes())+' likes'})
+    else:
+        #get posts of friends and send to frontend for displaying
+        current_user = UserProfile.objects.get(user=request.user)
+        current_user_friends = FriendProfile.objects.get(user=current_user)
+        posts = [Post.objects.filter(user=f) for f in current_user_friends.friend.all()]
+        posts = [p for post in posts for p in post.all()]
+        context_dict = {'posts':[]}
+        for post in posts:
+            context_dict['posts'].append({
+                        'id':post.id,
+                        'username':post.user.user.username,
+                        'time':post.get_date(),
+                        'picture':post.picture,
+                        'caption':post.caption,
+                        'likes': str(post.total_likes()) + ' likes',
+                    })
+        print(context_dict)
+        return render(request,'musicial/userhomepage.html',context=context_dict)
 
 def userCreatePostPage(request):
     return render(request,'musicial/createPage.html')
@@ -126,4 +151,7 @@ def songPage(request):
         artists = ', '.join([ele['name'] for ele in songs[i]['artists']])
         context_dict.append({'name':songs[i]['name'],'artists':artists,'image':songs[i]['album']['images'][1]['url'],'preview_url':songs[i]['preview_url']})
     return render(request,'musicial/songPage.html',context={'songs':context_dict,'data_present':True})
+
+def userPlaylistPage(request):
+    return render('request','musicial/PlaylistPage.html')
 
