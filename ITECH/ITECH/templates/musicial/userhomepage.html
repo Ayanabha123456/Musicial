@@ -43,26 +43,44 @@
       <div class="col-md-9 col-scroll">
         <!-- New type of post Card -->
         {% for post in posts %}
-        <div class="card mb-3 Post-card mx-auto">
-          <div class="card-body">
-            <h5 class="card-title">{{ post.username }}</h5>
-            <p class="card-text"><small class="text-muted">{{ post.time }}</small></p>
-          </div>
-          <img src="{{ post.picture.url }}">
-          <div class="card-body">
-            <p class="card-text">{{ post.caption }} </p>
-            <div class="p-2">
+        <div class="card Post-card">
+        <div class="row">
+          
+              <div class="col-md-6">
+                <div class="card-header">
+                  <h5 class="card-title">{{ post.username }}</h5>
+                  <p class="card-text"><small class="text-muted">{{ post.time }}</small></p>
+                </div>
+                
+                <img class="card-img-top" src="{{ post.picture.url }}">
+                
+                <p class="card-text">{{ post.caption }} </p>
               
-      
-              <button class="btn btn-outline-primary likes" name="likes" value="{{ post.id }}" ><i class="bi bi-hand-thumbs-up"></i> Like</button>
-              <p id="likes{{ post.id }}">{{ post.likes }}</p>
-              <button class="btn btn-outline-primary"><i class="bi bi-chat-dots"></i> Comment</button>
+                <div class="card-footer">
+                <button class="btn btn-outline-primary likes" name="likes" value="{{ post.id }}" ><i class="bi bi-hand-thumbs-up"></i> Like</button>
+                <p id="likes{{ post.id }}">{{ post.likes }}</p>
+              </div>
+              </div>
             
-            
+                <div class="col-md-6">
+                    <div class="card-body">
+                    <p id="comments{{ post.id }}">{{ post.comments }}</p>
+                    <textarea name="comment-text" class="comment-text{{ post.id }}" value="">
+
+                    </textarea>
+                    <button class="btn btn-outline-primary comments" name="comments" value="{{ post.id }}"><i class="bi bi-chat-dots"></i> Comment</button>
+                  </div>
+                </div>
+              
             </div>
-          </div>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
+        
+        
+          
+        </div>
+        
 
 
       </div>
@@ -70,14 +88,17 @@
   </div>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script type="text/javascript">
+    //handling likes
     $('.likes').click(function(){
       var pic_id = $(this).attr("value");
+      console.log(pic_id)
       $.ajax(
         {
           type:"POST",
           url:"landing",
           data:{
-            'picture_id':pic_id
+            'picture_id':pic_id,
+            'type':'like'
           },
           success: function(data)
           {
@@ -86,6 +107,28 @@
         }
       )
     });
+    //handling comments
+    $('.comments').click(function(){
+      var pic_id = $(this).attr("value")
+      var comment_text = $('.comment-text'+pic_id).val()
+      $('.comment-text'+pic_id).val('')
+      console.log(comment_text)
+      $.ajax(
+        {
+          type:"POST",
+          url:"landing",
+          data:{
+            'picture_id':pic_id,
+            'type':'comment',
+            'comment':comment_text
+          },
+          success: function(data)
+          {
+            $('#comments'+pic_id).text(data['comments'])
+          }
+        }
+      )
+    })
   </script>
 </body>
 </html>

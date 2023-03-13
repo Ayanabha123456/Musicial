@@ -39,5 +39,14 @@ class Post(models.Model):
     def total_likes(self):
         return self.likes.count()
 
+class Comment(models.Model):
+    post = models.ForeignKey(Post,related_name='comments',on_delete=models.CASCADE)
+    name = models.CharField(max_length=512,blank=False)
+    body = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s - %s' % (self.post.caption,self.name)
+
 
 #any form field validators

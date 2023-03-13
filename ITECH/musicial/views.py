@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 from musicial.forms import UserForm, UserProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
-from musicial.models import UserProfile, FriendProfile, Post
+from musicial.models import UserProfile, FriendProfile, Post, Comment
 from django.views.decorators.csrf import csrf_exempt
 import base64
 import requests
@@ -75,11 +75,20 @@ def registerPage(request):
 @csrf_exempt
 def userHomepage(request):
     if request.method == 'POST':
+        type_of_request = request.POST['type']
         picture_id = request.POST['picture_id']
         print('Got ',picture_id)
         post = Post.objects.get(id=picture_id)
-        post.likes.add(UserProfile.objects.get(user=request.user))
-        return JsonResponse({'likes':str(post.total_likes())+' likes'})
+        if type_of_request == 'like':
+            post.likes.add(UserProfile.objects.get(user=request.user))
+            return JsonResponse({'likes':str(post.total_likes())+' likes'})
+        else:
+            #add the new comment
+            com = Comment.objects.create(post=post,name=request.user.username,body=request.POST['comment'])
+            #retrieve all comments
+            comms = Comment.objects.filter(post=post)
+            comments = [c.name+' '+c.date_added.strftime("%a %m %y")+' '+c.body+'\n' for c in comms]
+            return JsonResponse({'comments':''.join(comments)})
     else:
         #get posts of friends and send to frontend for displaying
         current_user = UserProfile.objects.get(user=request.user)
@@ -88,6 +97,7 @@ def userHomepage(request):
         posts = [p for post in posts for p in post.all()]
         context_dict = {'posts':[]}
         for post in posts:
+            comments = [c.name+' '+c.date_added.strftime("%a %m %y")+' '+c.body+'\n' for c in Comment.objects.filter(post=post)]
             context_dict['posts'].append({
                         'id':post.id,
                         'username':post.user.user.username,
@@ -95,8 +105,8 @@ def userHomepage(request):
                         'picture':post.picture,
                         'caption':post.caption,
                         'likes': str(post.total_likes()) + ' likes',
+                        'comments':''.join(comments)
                     })
-        print(context_dict)
         return render(request,'musicial/userhomepage.html',context=context_dict)
 
 def userCreatePostPage(request):
