@@ -1,0 +1,128 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>songPage</title>
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <!-- css -->
+<style>
+   body {
+  background-image: url('Background1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  }   
+  .card-body {
+    max-width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
+
+  .nav-link {
+    color: #dc3545;
+  }
+  
+  .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color:#dc3545;
+} 
+.nav-tabs .nav-link.active {
+  background-color: #dc3545;
+  color: white;
+}
+.danger-text {
+  color: red;
+}
+
+
+
+</style>
+
+  <!-- External CSS-->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/songPageStyle.css' %}"/>
+  <!--External JavaScript-->
+  <script src="{% static 'js/javascript.js' %}"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+          <!-- stuff in the first column gose here -->
+          <div class="col-md-3 col-fixed border">
+            <img src="https://via.placeholder.com/200" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block">
+            <p style="text-align: center; color:#dc3545 ; font-weight: bold;">Username</p>   
+            <!-- nav buttons under the Profile-pic -->
+             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+              <a class="nav-link" href="landing" aria-selected="false">Home</a>
+              <a class="nav-link" href="profile" aria-selected="false">Profile</a>
+              <a class="nav-link" href="create-post" aria-selected="false">Create</a>
+              <a class="nav-link" href="social" aria-selected="false">Social</a>
+              <a class="nav-link active" href="songs" aria-selected="true">Songs</a>
+              <a class="nav-link" href="playlist" aria-selected="false">Playlist</a>
+              <a class="nav-link" href="logout" aria-selected="false">Logout</a>
+            </div>
+            
+            </div>
+            <!-- stuff in the second column -->
+                <div class="col-md-9">
+                <form class="form-inline" method="POST" action="songs">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="radio1" value="track" name="filter" checked>
+                            <label class="form-check-label danger-text" for="radio1">track</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="radio2" name="filter" value="genre">
+                            <label class="form-check-label danger-text" for="radio2">genre</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="radio3" name="filter" value="artist">
+                            <label class="form-check-label danger-text" for="radio3">artist</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="radio4" name="filter" value="year">
+                            <label class="form-check-label danger-text" for="radio4">year</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input class="song-search" type="text" id="song-search" name="song-query" placeholder="Search">
+                    </div>
+                    <button type="Search" class="btn btn-danger mb-2 btn-sm">Search</button>
+                </form>
+                <br/>
+                {% if data_present %}
+                    {% for song in songs %}
+                        {% with y=forloop.counter0|add:1 %}
+                        {% if forloop.counter0|divisibleby:"3" %}
+                            <div class="row">
+                        {% endif %}
+                            <div class="col-md-4">
+                                <div class="card" style="overflow: hidden;">
+                                    <img class="card-img-top" src="{{ song.image }}" alt="Card image cap">
+                                    <div class="card-body">
+                                    <h5 class="card-title">{{ song.name }}</h5>
+                                    <p class="card-text">{{ song.artists }}</p>
+                                    <audio controls><source src="{{ song.preview_url }}" type="audio/mpeg"></audio>
+                                    <button class="btn btn-danger rounded-circle" onclick="addedToPlaylist()"><i class="bi bi-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        {% if forloop.counter0 > 0 %}
+                        {% if y|divisibleby:"3" %}
+                            </div>
+                        {% endif %}
+                        {% endif %}
+                        {% endwith %}
+                    {% endfor %}
+                {% endif %}
+        </div>
+        </div>
+    </div>
+</body>

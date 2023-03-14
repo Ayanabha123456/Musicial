@@ -12,6 +12,13 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
   <!--css-->
     <style>
+
+  body {
+  background-image: url('Background1.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  }
    .rounded-circle{
     margin-top: 50px;
     margin-bottom: 10px;
@@ -22,20 +29,26 @@
     margin-bottom: 50px;
    }
    .nav{
-  
     margin-top: 20px;
     margin-bottom: 50px;
-    
    }
-   /* .input-group{    
-    margin-top: 10px;
-   } */
-   .nav-link {
-    color: #05c459;
+   .navbar {
+  background-color: transparent;
   }
+
+   .nav-link {
+    color: #dc3545;
+  }
+  
   .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-  background-color: #05c459;
+  background-color:#dc3545;
 } 
+.nav-tabs .nav-link.active {
+  background-color: #dc3545;
+  color: white;
+}
+
+
 
 
  /* settings for the input group and button*/
@@ -57,7 +70,7 @@
       <!-- stuff in the first column gose here -->
       <div class="col-md-3 col-fixed border">
         <img src="https://via.placeholder.com/200" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block">
-        <p class="fw-bold">Username</p>     
+        <p style="text-align: center; color:#dc3545 ; font-weight: bold;">Username</p>   
         <!-- nav buttons under the Profile-pic -->
 
 
@@ -75,10 +88,10 @@
       <!--right part-->
       <div class="col-md-9 col-scroll">
         <!-- search bar function -->
-        <nav class="navbar navbar-light bg-light">
+        <nav class="navbar"></nav>
         <form class="form-inline">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn btn-danger my-2 my-sm-0" type="submit">Search</button>
         </form>
         </nav>
         <!--nav tabs of "Friend Requests" and "Friend List"-->

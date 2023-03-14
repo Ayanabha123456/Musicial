@@ -1,0 +1,84 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CreatePage</title>
+
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!--css-->
+    <!-- css -->
+    <style>
+
+      body {
+      background-image: url('Background1.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      }
+      .nav-link {
+    color: #dc3545;
+  }
+      .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color:#dc3545;
+} 
+.nav-tabs .nav-link.active {
+  background-color: #dc3545;
+  color: white;
+}
+
+    
+    
+      </style>
+  <!-- External CSS-->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/usercreatepageStyle.css' %}"/>
+</head>
+<body>
+    
+  <div class="container-fluid">
+    <div class="row">
+      <!-- stuff in the first column gose here -->
+      <div class="col-md-3 col-fixed border">
+        <img src="https://via.placeholder.com/200" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block">
+        <p style="text-align: center; color:#dc3545 ; font-weight: bold;">Username</p>       
+        <!-- nav buttons under the Profile-pic -->
+         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a class="nav-link" href="landing" aria-selected="false">Home</a>
+          <a class="nav-link" href="profile" aria-selected="false">Profile</a>
+          <a class="nav-link active" href="create-post" aria-selected="true">Create</a>
+          <a class="nav-link" href="social" aria-selected="false">Social</a>
+          <a class="nav-link" href="playlist" aria-selected="false">Playlist</a>
+          <a class="nav-link" href="logout" aria-selected="false">Logout</a>
+        </div> 
+      </div>
+      <!--the right part: to create Playlist-->
+      
+      <div class="col-md-9 col-scroll">
+        <!-- choice of function -->
+            <!-- nav pills -->
+            <ul class="nav nav-pills nav-fill">
+                <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Create playlist</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Show playlist</a>
+            </ul>
+        
+            <!-- input bar -->
+            <div class="input-group input-group-lg mt-5">
+                <span class="input-group-text " id="inputGroup-sizing-lg">Enter the Playlist Name</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+            </div>
+             
+        <!--submit button-->
+        <center><button type="submit" class="btn btn-danger mt-3">Create</Inp></button> </center> 
+      </div>
+  </div>
+  </div>     
+</body>
+</html>

@@ -12,12 +12,19 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <!-- External CSS-->
   <style>
+
+body {
+            background-image: url('Background1.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            }
   /*color of nav*/
   .nav-link {
-  color: #05c459;
+  color: #dc3545;
   }
   .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-  background-color: #05c459;} 
+  background-color: #dc3545;} 
 
   .rounded-circle{
     margin-top: 50px;
@@ -80,14 +87,13 @@
         
       <!-- stuff in the second column goes here -->
       <div class="col-md-9 col-scroll">
-        <!-- search bar function -->
-        <nav class="navbar navbar-light bg-light">
-          <form class="form-inline">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </nav>
-
+  <!-- search bar function -->
+  <nav class="navbar"></nav>
+  <form class="form-inline">
+  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+  <button class="btn btn-danger my-2 my-sm-0" type="submit">Search</button>
+  </form>
+  </nav>
         <!-- New type of post Card -->
         <div class="card mb-3 Post-card mx-auto">
           <div class="card-body">
