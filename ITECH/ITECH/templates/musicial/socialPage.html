@@ -20,7 +20,13 @@
       <!-- stuff in the first column gose here -->
       <div class="col-md-3 col-fixed border">
         <img src="https://via.placeholder.com/200" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block">
-        <p class="fw-bold">Username</p>     
+        <p class="fw-bold">
+            {% if user.is_authenticated %}
+            {{ user.username }}
+            {% else %}
+            hey there partner!
+            {% endif %}
+        </p>     
         <!-- nav buttons under the Profile-pic -->
          <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
           <a class="nav-link" href="landing" aria-selected="false">Home</a>

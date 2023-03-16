@@ -22,6 +22,16 @@ class FriendProfile(models.Model):
     def __str__(self):
         return self.user.user.username
     
+    def get_num_friends(self):
+        return self.friend.count()
+
+class FriendRequest(models.Model):
+    sender = models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name='friend_send')
+    receiver = models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name='friend_receive')
+
+    def __str__(self):
+        return self.sender.user.username + '<-->' + self.receiver.user.username
+    
 class Post(models.Model):
     id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
     user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name='user_post')

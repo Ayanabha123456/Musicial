@@ -116,7 +116,25 @@ def userSocialPage(request):
     return render(request,'musicial/socialPage.html')
 
 def userProfilePage(request):
-    return render(request,'musicial/ProfilePage.html')
+    #get no. of friends
+    current_user = UserProfile.objects.get(user=request.user)
+    current_user_friends = FriendProfile.objects.get(user=current_user)
+    context_dict = {'num_friends':current_user_friends.get_num_friends(),'posts':[]}
+    #get posts of user
+    posts = [Post.objects.filter(user=current_user)]
+    posts = [p for post in posts for p in post.all()]
+    for post in posts:
+            comments = [c.name+' '+c.date_added.strftime("%a %m %y")+' '+c.body+'\n' for c in Comment.objects.filter(post=post)]
+            context_dict['posts'].append({
+                        'id':post.id,
+                        'username':post.user.user.username,
+                        'time':post.get_date(),
+                        'picture':post.picture,
+                        'caption':post.caption,
+                        'likes': str(post.total_likes()) + ' likes',
+                        'comments':''.join(comments)
+                    })
+    return render(request,'musicial/ProfilePage.html',context=context_dict)
 
 def songPage(request):
     #Spotify authorization
