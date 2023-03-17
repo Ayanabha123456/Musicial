@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout as django_logout
 from musicial.forms import UserForm, UserProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
 from musicial.models import UserProfile, FriendProfile, Post, Comment, FriendRequest
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.cache import cache_control
 import base64
 import requests
 from datetime import date
@@ -110,7 +111,20 @@ def userHomepage(request):
         return render(request,'musicial/userhomepage.html',context=context_dict)
 
 def userCreatePostPage(request):
-    return render(request,'musicial/createPage.html')
+    context_dict = {}
+    if request.method == 'POST':
+        picture = request.FILES['picture']
+        caption = request.POST.get('caption')
+        if caption:
+            p = Post.objects.create(user=UserProfile.objects.get(user=request.user),picture=picture,caption=caption)
+            p.save()
+            context_dict['status'] = 'Uploaded'
+        else:
+            p = Post.objects.create(user=UserProfile.objects.get(user=request.user),picture=picture)
+            p.save()
+            context_dict['status'] = 'Uploaded'
+    
+    return render(request,'musicial/createPage.html',context=context_dict)
 
 @csrf_exempt
 def userSocialPage(request):
@@ -130,7 +144,7 @@ def userSocialPage(request):
         if 'reject' in request.POST.keys():
             #reject friend request
             FriendRequest.objects.filter(sender=UserProfile.objects.get(user=User.objects.get(username=request.POST['reject'])),receiver=UserProfile.objects.get(user=request.user)).delete()
-            
+
         friend_query = request.POST.get('friend-query')
         try:
             user = User.objects.get(username=friend_query)
@@ -242,4 +256,8 @@ def songPage(request):
 
 def userPlaylistPage(request):
     return render('request','musicial/PlaylistPage.html')
+
+def logout(request):
+    django_logout(request)
+    return HttpResponseRedirect('/musicial')
 

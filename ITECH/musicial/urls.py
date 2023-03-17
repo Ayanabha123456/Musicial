@@ -12,5 +12,6 @@ urlpatterns = [
     path('social',views.userSocialPage,name='social'),
     path('profile',views.userProfilePage,name='profile'),
     path('songs',views.songPage,name='songs'),
-    path('playlist',views.userPlaylistPage,name='playlist')
+    path('playlist',views.userPlaylistPage,name='playlist'),
+    path('logout',views.logout,name='logout')
 ]

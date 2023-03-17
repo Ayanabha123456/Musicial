@@ -38,47 +38,34 @@
       
       <div class="col-md-9 col-scroll">
    
-        <!-- choice of function -->
-             <!-- location Bar-->
-            <label class="col-sm-3 text-center">Type</label> 
-            <div class="btn-group col-sm-7">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                  Photo/Music
-                </button>
-                <div class="dropdown-menu col-sm-11 text-center">
-                  <button class="dropdown-item" type="button">Photo</button>
-                  <div class="dropdown-divider"></div>
-                  <button class="dropdown-item " type="button">Music</button>
-                </div>
-            </div> 
+             <form method="POST" action="create-post" enctype="multipart/form-data">
+              {% csrf_token %}
             <!-- upload function -->
             <div class="container"> 
-              <div class="header"> 
+              <div class="header">
+                
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> 
                 <path d="M7 10V9C7 6.23858 9.23858 4 12 4C14.7614 4 17 6.23858 17 9V10C19.2091 10 21 11.7909 21 14C21 15.4806 20.1956 16.8084 19 17.5M7 10C4.79086 10 3 11.7909 3 14C3 15.4806 3.8044 16.8084 5 17.5M7 10C7.43285 10 7.84965 10.0688 8.24006 10.1959M12 12V21M12 12L15 15M12 12L9 15" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
-              </div> 
-              <label for="file" class="footer"> 
-                <p>browse file to upload</p> 
-              </label> 
-            <input id="file" type="file"> 
+              </div>
+              <div class="input-group mb-3">
+              
+              <input type="file" id="image" name='picture' required> 
             </div>
+          </div>
             
             <!-- Caption Bar-->
             <div class="input-group mb-3">
               <div class="input-group-prepend">
-                <p class="col-sm-3 text-align" >Caption: </p>
+                <label class="col-sm-3 text-align" >Caption: </label>
               </div>
-              <input type="text" class="form-control" aria-label="Caption">
-            </div>
-            <!-- location Bar-->
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <p class="col-sm-3 text-align" >Location:</p>
-              </div>
-              <input type="text" class="form-control" aria-label="location">
+              <input id="caption" name="caption" type="text" class="form-control" aria-label="Caption">
             </div>   
             <!--submit button-->
             <button type="submit" class="btn btn-primary">submit</Inp></button>  
+          </form>
+          {% if status %}
+          <h4>Post uploaded successfully!!</h4>
+          {% endif %}
       </div>
   </div>
   </div>     
