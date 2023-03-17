@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Playlist</title>
+  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!--css-->
+    <style>
+   .rounded-circle{
+    margin-top: 50px;
+    margin-bottom: 10px;
+   }
+   /*settings for Username*/
+   .fw-bold{
+    text-align: center;
+    margin-bottom: 50px;
+   }
+   .nav{
+    margin-top: 20px;
+    margin-bottom: 50px;
+   }
+   .input-group{    
+    margin-top: 10px;
+   }
+   
+   .nav-link {
+  color: #05c459;
+}
+
+    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color: #05c459;
+} 
+
+/* settings for the input group and button*/
+.custom-input-group {
+  max-width: 700px;
+  height: 38px;
+  padding: 0 10px;
+  margin: 0 auto; /* add this line to center the element */
+}
+
+
+
+  </style>
+</head>
+<body class="bg-light">
+    
+  <div class="container-fluid">
+    <div class="row">
+      <!-- stuff in the first column gose here -->
+      <div class="col-md-3 col-fixed border">
+        <img src="https://via.placeholder.com/200" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block">
+        <p class="fw-bold">Username</p>     
+        <!-- nav buttons under the Profile-pic -->
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a class="nav-link" href="landing" aria-selected="true"><i class="bi bi-house"></i> Home</a>
+          <a class="nav-link" href="profile" aria-selected="false"><i class="bi bi-person-badge"></i> Profile</a>
+          <a class="nav-link" href="create-post" aria-selected="false"><i class="bi bi-plus-circle"></i> Create</a>
+          <a class="nav-link" href="social" aria-selected="false"><i class="bi bi-people-fill"></i> Social</a>
+          <a class="nav-link" href="songs" aria-selected="true"><i class="bi bi-music-note"></i>Songs</a>
+          <a class="nav-link active" href="playlist" aria-selected="false"><i class="bi bi-music-note-list"></i> Playlist</a>
+          <a class="nav-link" href="logout" aria-selected="false"><i class="bi bi-box-arrow-left"></i> Logout</a>
+        </div> 
+      </div>
+
+      <!--right part-->
+      <div class="col-md-9 col-scroll">
+      <div style="margin-top: 30px; margin-bottom: 50px;">
+      <!-- choice of playlist-->
+      <div class="d-flex justify-content-center">
+        <div class="btn-group col-md-5">
+           <!-- button group content here -->
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Playlist --Ed Sheeran
+                </button>
+                <div class="dropdown-menu col-sm-11 text-center">
+                  <button class="dropdown-item" type="button">Playlist1</button>
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item " type="button">Playlist2</button>
+                  <div class="dropdown-divider"></div>
+                  <button class="dropdown-item " type="button">...</button>
+                  </div>
+                </div>
+      </div>
+      </div>
+
+      <!--input group pf friend requests-->
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="Shape of you -- Ed Sheeran">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+    </div>
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="Perfect -- Ed Sheeran">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+      </div>
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="Thinking out loud -- Ed Sheeran">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+      </div>
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="Photograph -- Ed Sheeran">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+      </div>
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="SongName5">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+      </div>
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="SongName6">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+      </div>
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="SongName7">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+      </div>
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="SongName8">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+      </div>
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="SongName9">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+      </div>
+      <div class="input-group mb-3 custom-input-group">
+        <input type="text" class="form-control" placeholder="SongName10">
+        <div class="input-group-append" id="button-addon4">
+          <button class="btn btn-outline-success" type="button ">Play</button>
+          <button class="btn btn-outline-danger" type="button">Delete</button>
+        </div>
+      </div>
+      </div>
+    </div>
+
+      </div>
+  
+  </div>     
+</body>
+</html>

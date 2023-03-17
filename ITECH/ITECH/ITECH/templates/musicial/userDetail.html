@@ -1,0 +1,15 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Detail Page</title>
+  </head>
+<body>
+  <p>{{ user.id }}</p>
+  <p>{{ user.username }}</p>
+  <p>{{ userProfile.gender }}</p>
+  <p>{{ userProfile.age }}</p>
+  <img src="{{ userProfile.picture.url }}">
+</body>
+</html>

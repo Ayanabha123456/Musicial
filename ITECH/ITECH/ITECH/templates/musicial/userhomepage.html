@@ -1,0 +1,134 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Blog Page</title>
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <!-- External CSS-->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/userhomepageStyle.css' %}"/>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- stuff in the first column gose here -->
+      <div class="col-md-3 col-fixed border">
+        <img src="{{ user.userprofile.picture.url }}" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block">
+        <p class="fw-bold">
+          {% if user.is_authenticated %}
+          {{ user.username }}
+          {% else %}
+          hey there partner!
+          {% endif %}
+        </p>
+
+
+        <!-- nav buttons under the Profile-pic -->
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+          <a class="nav-link active" href="landing" aria-selected="true"><i class="bi bi-house"></i> Home</a>
+          <a class="nav-link" href="profile" aria-selected="false"><i class="bi bi-person-badge"></i> Profile</a>
+          <a class="nav-link" href="create-post" aria-selected="false"><i class="bi bi-plus-circle"></i> Create</a>
+          <a class="nav-link" href="social" aria-selected="false"><i class="bi bi-people-fill"></i> Social</a>
+          <a class="nav-link" href="playlist" aria-selected="false"><i class="bi bi-music-note-list"></i> Playlist</a>
+          <a class="nav-link" href="logout" aria-selected="false"><i class="bi bi-box-arrow-left"></i> Logout</a>
+        </div>
+      </div>
+        
+      <!-- stuff in the second column goes here -->
+      <div class="col-md-9 col-scroll">
+        <!-- New type of post Card -->
+        {% for post in posts %}
+        <div class="card Post-card">
+        <div class="row">
+          
+              <div class="col-md-6">
+                <div class="card-header">
+                  <h5 class="card-title">{{ post.username }}</h5>
+                  <p class="card-text"><small class="text-muted">{{ post.time }}</small></p>
+                </div>
+                
+                <img class="card-img-top" src="{{ post.picture.url }}">
+                
+                <p class="card-text">{{ post.caption }} </p>
+              
+                <div class="card-footer">
+                <button class="btn btn-outline-primary likes" name="likes" value="{{ post.id }}" ><i class="bi bi-hand-thumbs-up"></i> Like</button>
+                <p id="likes{{ post.id }}">{{ post.likes }}</p>
+              </div>
+              </div>
+            
+                <div class="col-md-6">
+                    <div class="card-body">
+                    <p id="comments{{ post.id }}">{{ post.comments }}</p>
+                    <textarea name="comment-text" class="comment-text{{ post.id }}" value="">
+
+                    </textarea>
+                    <button class="btn btn-outline-primary comments" name="comments" value="{{ post.id }}"><i class="bi bi-chat-dots"></i> Comment</button>
+                  </div>
+                </div>
+              
+            </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        
+          
+        </div>
+        
+
+
+      </div>
+    </div>
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script type="text/javascript">
+    //handling likes
+    $('.likes').click(function(){
+      var pic_id = $(this).attr("value");
+      console.log(pic_id)
+      $.ajax(
+        {
+          type:"POST",
+          url:"landing",
+          data:{
+            'picture_id':pic_id,
+            'type':'like'
+          },
+          success: function(data)
+          {
+            $('#likes'+pic_id).text(data['likes'])
+          }
+        }
+      )
+    });
+    //handling comments
+    $('.comments').click(function(){
+      var pic_id = $(this).attr("value")
+      var comment_text = $('.comment-text'+pic_id).val()
+      $('.comment-text'+pic_id).val('')
+      console.log(comment_text)
+      $.ajax(
+        {
+          type:"POST",
+          url:"landing",
+          data:{
+            'picture_id':pic_id,
+            'type':'comment',
+            'comment':comment_text
+          },
+          success: function(data)
+          {
+            $('#comments'+pic_id).text(data['comments'])
+          }
+        }
+      )
+    })
+  </script>
+</body>
+</html>
