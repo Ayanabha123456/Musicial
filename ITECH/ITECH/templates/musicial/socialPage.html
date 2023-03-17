@@ -74,6 +74,10 @@
             <div class="input-group mb-3">
               <h4>{{ request_to.user.username }} already sent you a request</h4>
             </div>
+            {% elif status == 'Friend' %}
+            <div class="input-group mb-3">
+              <h4>{{ request_to.user.username }} is already a friend</h4>
+            </div>
             {% else %}
             <div class="input-group mb-3">
               <h4 class="disp_send">{{ request_to.user.username }}</h4>
@@ -89,12 +93,12 @@
             <div class="list_of_requests">
               <h4>Friend Requests</h4>
               {% for request in requests %}
-              <div class="input-group mb-3">
+              <div class="input-group mb-3" id="pending{{ request.username }}">
                 <h4>{{ request.username }}</h4>
                 <img src="{{ request.picture.url }}">
                 <div class="input-group-append" id="button-addon4">
-                  <button class="btn btn-primary" type="button ">Accept</button>
-                  <button class="btn btn-danger" type="button">Reject</button>
+                  <button class="btn btn-primary accept" value="{{ request.username }}">Accept</button>
+                  <button class="btn btn-danger reject" value="{{ request.username }}">Reject</button>
                 </div>
                 </div>
                 {% endfor %}
@@ -122,7 +126,6 @@
     //handling friend requests
     $('.send').click(function(){
       var username = $(this).attr("value");
-      console.log(username)
       $.ajax(
         {
           type:"POST",
@@ -138,6 +141,46 @@
         }
       )
     });
+    //handling accept request
+    $('.accept').click(function(){
+      var username = $(this).attr("value");
+      console.log(username)
+      $.ajax(
+        {
+          type:"POST",
+          url:"social",
+          data:{
+            'accept':username
+          },
+          success: function(data)
+          {
+            console.log('Success')
+            //update current friend list
+            $('.list_of_friends').append('<li>'+username+'</li>')
+            //remove pending friend request
+            $('#pending'+username).remove()
+          }
+        }
+      )
+    })
+    //handling delete request
+    $('.reject').click(function(){
+      var username = $(this).attr("value")
+      $.ajax(
+        {
+          type:"POST",
+          url:"social",
+          data:{
+            'reject':username
+          },
+          success: function(data)
+          {
+            //remove pending friend request
+            $('#pending'+username).remove()
+          }
+        }
+      )
+    })
   </script>    
 </body>
 </html>

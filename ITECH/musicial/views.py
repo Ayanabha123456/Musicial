@@ -120,15 +120,34 @@ def userSocialPage(request):
             #create new friend request
             user = UserProfile.objects.get(user=User.objects.get(username=request.POST['friending']))
             f_req = FriendRequest.objects.create(sender=UserProfile.objects.get(user=request.user),receiver=user)
-
+        if 'accept' in request.POST.keys():
+            #accept friend request
+            user1, user2 = UserProfile.objects.get(user=User.objects.get(username=request.POST['accept'])), UserProfile.objects.get(user=request.user)
+            friendlist1, friendlist2 = FriendProfile.objects.get_or_create(user=user1)[0], FriendProfile.objects.get_or_create(user=user2)[0]
+            friendlist1.friend.add(user2)
+            friendlist2.friend.add(user1)
+            FriendRequest.objects.filter(sender=UserProfile.objects.get(user=User.objects.get(username=request.POST['accept'])),receiver=UserProfile.objects.get(user=request.user)).delete()
+        if 'reject' in request.POST.keys():
+            #reject friend request
+            FriendRequest.objects.filter(sender=UserProfile.objects.get(user=User.objects.get(username=request.POST['reject'])),receiver=UserProfile.objects.get(user=request.user)).delete()
+            
         friend_query = request.POST.get('friend-query')
         try:
             user = User.objects.get(username=friend_query)
             user = UserProfile.objects.get(user=user)
+            current_friendlist = FriendProfile.objects.filter(user=UserProfile.objects.get(user=request.user))
+            is_friend = False
+            for f in current_friendlist[0].friend.all():
+                if user.user.username == f.user.username: # check if friend is already in friendlist
+                    is_friend = True
+                    break
             check_req_sent  = FriendRequest.objects.filter(sender=UserProfile.objects.get(user=request.user),receiver=user)
             check_req_received = FriendRequest.objects.filter(sender=user,receiver=UserProfile.objects.get(user=request.user))
 
-            if check_req_received.count() != 0: #incoming request from user pending
+            if is_friend:
+                context_dict['status'] = 'Friend'
+                context_dict['request_to'] = user
+            elif check_req_received.count() != 0: #incoming request from user pending
                 context_dict['status'] = 'Received'
                 context_dict['request_to'] = user
             elif check_req_sent.count() == 0: # found user to send request
@@ -136,6 +155,7 @@ def userSocialPage(request):
                 context_dict['request_to'] = user
             else: # request already sent
                 context_dict['status'] = 'Sent'
+                context_dict['request_to'] = user
         except User.DoesNotExist:
             context_dict['status'] = 'Invalid'
     
