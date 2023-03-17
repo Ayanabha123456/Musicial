@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login
 from musicial.forms import UserForm, UserProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
-from musicial.models import UserProfile, FriendProfile, Post, Comment
+from musicial.models import UserProfile, FriendProfile, Post, Comment, FriendRequest
 from django.views.decorators.csrf import csrf_exempt
 import base64
 import requests
@@ -112,8 +112,48 @@ def userHomepage(request):
 def userCreatePostPage(request):
     return render(request,'musicial/createPage.html')
 
+@csrf_exempt
 def userSocialPage(request):
-    return render(request,'musicial/socialPage.html')
+    context_dict = {'requests':[]}
+    if request.method == 'POST':
+        if 'friending' in request.POST.keys():
+            #create new friend request
+            user = UserProfile.objects.get(user=User.objects.get(username=request.POST['friending']))
+            f_req = FriendRequest.objects.create(sender=UserProfile.objects.get(user=request.user),receiver=user)
+
+        friend_query = request.POST.get('friend-query')
+        try:
+            user = User.objects.get(username=friend_query)
+            user = UserProfile.objects.get(user=user)
+            check_req_sent  = FriendRequest.objects.filter(sender=UserProfile.objects.get(user=request.user),receiver=user)
+            check_req_received = FriendRequest.objects.filter(sender=user,receiver=UserProfile.objects.get(user=request.user))
+
+            if check_req_received.count() != 0: #incoming request from user pending
+                context_dict['status'] = 'Received'
+                context_dict['request_to'] = user
+            elif check_req_sent.count() == 0: # found user to send request
+                context_dict['status'] = 'Display'
+                context_dict['request_to'] = user
+            else: # request already sent
+                context_dict['status'] = 'Sent'
+        except User.DoesNotExist:
+            context_dict['status'] = 'Invalid'
+    
+    #see how many friend requests current user has received
+    current_user = UserProfile.objects.get(user=request.user)
+    received_requests = [FriendRequest.objects.filter(receiver=current_user)]
+    received_requests = [fq for req in received_requests for fq in req.all()]
+        
+    for req in received_requests:
+        context_dict['requests'].append({
+                'username':req.sender.user.username,
+                'picture':req.sender.picture
+            })
+    #get the friends of the current user
+    current_user_friends = FriendProfile.objects.get(user=current_user)
+    friends = [f for f in current_user_friends.friend.all()]
+    context_dict['friends'] = friends
+    return render(request,'musicial/socialPage.html',context=context_dict)
 
 def userProfilePage(request):
     #get no. of friends

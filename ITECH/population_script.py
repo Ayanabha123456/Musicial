@@ -5,7 +5,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 import django
 django.setup()
 from django.contrib.auth.models import User
-from musicial.models import UserProfile,FriendProfile, Post
+from musicial.models import UserProfile,FriendProfile, Post, FriendRequest
 
 def populate():
     profiles = [
@@ -46,11 +46,21 @@ def populate():
         u4:[u2],
         u5:[u1,u3]
     }
-
+    
+    friend_requests = {
+        u1:[u4],
+        u5:[u2]
+    }
     posts = [
         {'user':u3,
          'picture':'posts/sunset.jpg',
-         'caption':'Looking for dreams across the sun'}
+         'caption':'Looking for dreams across the sun'},
+         {'user':u3,
+          'picture':'posts/seaside.jpg',
+          'caption':'Serenity in the blue'},
+          {'user':u2,
+           'picture':'posts/plane.jpg',
+           'caption':'Flying yet again'}
     ]
     for profile in profiles:
         print(profile)
@@ -61,6 +71,10 @@ def populate():
 
     for user,friend_data in user_friends.items():
         add_friend(user,friend_data)
+    
+    for user,friend_req in friend_requests.items():
+        for req in friend_req:
+            add_friend_request(user,req)
     
     for post in posts:
         add_post(post['user'],post['picture'],post['caption'])
@@ -80,6 +94,11 @@ def populate():
         print('Caption: ',post.caption)
         print('Date: ',post.date)
         print('Likes: ',post.likes.all())
+        print('\n')
+    
+    for friend_req in FriendRequest.objects.all():
+        print('Sender: ',friend_req.sender.user.username)
+        print('Receiver: ',friend_req.receiver.user.username)
         print('\n')
 
 def add_user(username,password):
@@ -105,6 +124,10 @@ def add_friend(user,friends):
 def add_post(user,picture,caption):
     post = Post.objects.create(user=user,picture=picture,caption=caption)
     return post
+
+def add_friend_request(sender,receiver):
+    friend_req = FriendRequest.objects.get_or_create(sender=sender,receiver=receiver)[0]
+    return friend_req
 
 if __name__ == '__main__':
     print('Starting Musicial population script...')
