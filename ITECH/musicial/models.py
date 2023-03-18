@@ -57,6 +57,27 @@ class Comment(models.Model):
 
     def __str__(self):
         return '%s - %s' % (self.post.caption,self.name)
+    
 
+class Song(models.Model):
+    songid = models.CharField(max_length=512,blank=False,primary_key=True)
+    name = models.TextField(blank=True)
+    artist = models.CharField(max_length=512,blank=True)
+    music_url = models.URLField(max_length=600,blank=True)
+    image_url = models.URLField(max_length=600,blank=True)
 
+    def __str__(self):
+        return self.songid+' : '+self.name
+
+class Playlist(models.Model):
+    playlistid = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+    name = models.CharField(max_length=512,blank=False)
+    user = models.ForeignKey(UserProfile,on_delete=models.CASCADE,related_name='user_playlist')
+    songs = models.ManyToManyField(Song,related_name='playlist_songs')
+
+    def __str__(self):
+        return str(self.playlistid)+' : '+self.name
+    
+    def get_num_songs(self):
+        return self.songs.count()
 #any form field validators

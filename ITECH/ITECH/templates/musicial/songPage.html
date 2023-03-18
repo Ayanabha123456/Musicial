@@ -38,6 +38,25 @@
             </div>
             <!-- stuff in the second column -->
                 <div class="col-md-9">
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title">Modal Title</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                              <p>Modal body text goes here.</p>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                 <form class="form-inline" method="POST" action="songs">
                     {% csrf_token %}
                     <div class="form-group">
@@ -72,12 +91,19 @@
                         {% endif %}
                             <div class="col-md-4">
                                 <div class="card" style="overflow: hidden;">
-                                    <img class="card-img-top" src="{{ song.image }}" alt="Card image cap">
+                                    <img class="card-img-top" src="{{ song.image }}" alt="Card image cap" id="song_image{{ song.id }}">
                                     <div class="card-body">
-                                    <h5 class="card-title">{{ song.name }}</h5>
-                                    <p class="card-text">{{ song.artists }}</p>
-                                    <audio controls><source src="{{ song.preview_url }}" type="audio/mpeg"></audio>
-                                    <button class="btn btn-primary rounded-circle" onclick="addedToPlaylist()"><i class="bi bi-plus"></i></button>
+                                    <h5 class="card-title" id="song_name{{ song.id }}">{{ song.name }}</h5>
+                                    <p class="card-text" id="song_artist{{ song.id }}">{{ song.artists }}</p>
+                                    <audio controls><source src="{{ song.preview_url }}" type="audio/mpeg" id="song_url{{ song.id }}"></audio>
+                                    
+                                        <select name="playlist" id="playlist{{ song.id }}">
+                                            {% for playlist in playlists %}
+                                            <option value="{{ playlist }}">{{ playlist }}</option>
+                                            {% endfor %}
+                                          </select>
+                                    <button class="btn btn-primary rounded-circle add-song" value="{{ song.id }}"><i class="bi bi-plus"></i></button>
+                                    
                                     </div>
                                 </div>
                             </div>
@@ -92,4 +118,39 @@
         </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script type="text/javascript">
+    //handling song addition to playlist
+    $('.add-song').click(function(){
+      var song_id = $(this).attr("value");
+      var song_name = $('#song_name'+song_id).text();
+      var artist = $('#song_artist'+song_id).text();
+      var image = $('#song_image'+song_id).attr('src');
+      var music_url = $('#song_url'+song_id).attr('src');
+      console.log(song_id+' '+song_name+' '+artist+' '+image+' '+music_url)
+      var playlist = $('#playlist'+song_id).val();
+      if (playlist == null)
+      {
+        window.alert('Create or select a playlist first!!')
+      }
+      else
+      {
+        $.ajax(
+            {
+            type:"PUT",
+            url:"songs",
+            data:JSON.stringify({
+                'song':{'playlist':playlist,'songid':song_id,'name':song_name,'artist':artist,'music_url':music_url,'image_url':image}
+            }),
+            success: function(data)
+            {
+                window.alert('Song added to playlist!!')
+            }
+        }
+        )
+      }
+      
+    });
+  </script>
 </body>
+</html>

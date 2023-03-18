@@ -72,100 +72,120 @@
       <!--right part-->
       <div class="col-md-9 col-scroll">
       <div style="margin-top: 30px; margin-bottom: 50px;">
-      <!-- choice of playlist-->
+        <!--nav tabs of "Playlist Creation" and "Playlists"-->
+        <ul class="nav nav-tabs nav-justified">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#menu1">Create Playlist</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#menu2">Playlist</a>
+          </li>       
+       </ul>
+       <div class="tab-content">
+        <div class="tab-pane container active" id="menu1">
+          <form method="POST" action="playlist">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <label class="col-sm-3 text-align" >Playlist </label>
+              </div>
+              <input type="text" class="form-control" placeholder="Playlist name" name="playlist" id="playlist" required>
+            </div>
+            <!--submit button-->
+            <button type="submit" class="btn btn-primary">submit</Inp></button> 
+          </form>
+          {% if status %}
+          {% if status == 'Created' %}
+            <h4>Playlist successfully created</h4>
+          {% else %}
+            <h4>Playlist already exists</h4>
+          {% endif %}
+          {% endif %}
+        </div>
+        <div class="tab-pane container" id="menu2">
+          <!-- choice of playlist-->
       <div class="d-flex justify-content-center">
         <div class="btn-group col-md-5">
            <!-- button group content here -->
                 <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                Playlist --Ed Sheeran
+                Playlists
                 </button>
                 <div class="dropdown-menu col-sm-11 text-center">
-                  <button class="dropdown-item" type="button">Playlist1</button>
+                  {% for playlist in playlists %}
+                  <button class="dropdown-item playlist" type="button" id="{{ playlist }}" value="{{ playlist }}">{{ playlist }}</button>
                   <div class="dropdown-divider"></div>
-                  <button class="dropdown-item " type="button">Playlist2</button>
-                  <div class="dropdown-divider"></div>
-                  <button class="dropdown-item " type="button">...</button>
+                  {% endfor %}
                   </div>
                 </div>
       </div>
-      </div>
+      <br>
 
-      <!--input group pf friend requests-->
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="Shape of you -- Ed Sheeran">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
+      <!--Playlist songs-->
+      <ul class="list-group" id="songs-list">
+        
+        
+        
+      </ul>
+      
+      
+  </div>
         </div>
-    </div>
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="Perfect -- Ed Sheeran">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
-        </div>
-      </div>
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="Thinking out loud -- Ed Sheeran">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
-        </div>
-      </div>
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="Photograph -- Ed Sheeran">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
-        </div>
-      </div>
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="SongName5">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
-        </div>
-      </div>
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="SongName6">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
-        </div>
-      </div>
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="SongName7">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
-        </div>
-      </div>
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="SongName8">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
-        </div>
-      </div>
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="SongName9">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
-        </div>
-      </div>
-      <div class="input-group mb-3 custom-input-group">
-        <input type="text" class="form-control" placeholder="SongName10">
-        <div class="input-group-append" id="button-addon4">
-          <button class="btn btn-outline-success" type="button ">Play</button>
-          <button class="btn btn-outline-danger" type="button">Delete</button>
-        </div>
-      </div>
+       </div>
+      
       </div>
     </div>
 
       </div>
   
-  </div>     
+  </div> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script type="text/javascript">
+    //handling Playlist display
+    $('.playlist').click(function(){
+      var playlist = $(this).attr('value')
+      $.ajax(
+        {
+          type:'POST',
+          url:'playlist',
+          data:{
+            'disp_playlist':playlist
+          },
+          success: function(data)
+          {
+            $('#songs-list').children().remove();
+            data['songs'].forEach(function(song) {
+              var outer_div = $("<div class='row' style='display:flex;justify-self: space-between;overflow:auto'>")
+              
+              var div1 = $("<div class='col-sm-4'>")
+              var img = $("<img width='70px;'>")
+              img.attr('src',song.image_url)
+              div1.append(img)
+
+              var div2 = $("<div class='col-sm-4'>")
+              var h5 = $("<h5>").text(song.name)
+              var p = $("<p>").text(song.artist)
+              div2.append(h5)
+              div2.append(p)
+
+              var div3 = $("<div class='col-sm-4'>")
+              var source = $("<source type='audio/mpeg'>")
+              source.attr('src',song.music_url)
+              var audio = $("<audio controls>")
+              audio.append(source)
+              div3.append(audio)
+
+              outer_div.append(div1)
+              outer_div.append(div2)
+              outer_div.append(div3)
+              var li = $("<li class='list-group-item'>")
+              li.append(outer_div)
+              // Add the <li> element to the <ul> list
+              $("#songs-list").append(li);
+            })
+          }
+        }
+      )
+    });
+    </script>
 </body>
 </html>

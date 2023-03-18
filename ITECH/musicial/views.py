@@ -4,12 +4,13 @@ from django.contrib.auth import authenticate, login, logout as django_logout
 from musicial.forms import UserForm, UserProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import check_password
-from musicial.models import UserProfile, FriendProfile, Post, Comment, FriendRequest
+from musicial.models import UserProfile, FriendProfile, Post, Comment, FriendRequest, Playlist, Song
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.cache import cache_control
 import base64
 import requests
 from datetime import date
+import json
 # Create your views here.
 
 def index(request):
@@ -210,6 +211,7 @@ def userProfilePage(request):
                     })
     return render(request,'musicial/ProfilePage.html',context=context_dict)
 
+@csrf_exempt
 def songPage(request):
     #Spotify authorization
     client_id = '350eb16772f243f2a403853b013ed7fe' # Your client id
@@ -245,17 +247,49 @@ def songPage(request):
     else:
         request_URL = "https://api.spotify.com/v1/search?q=year:"+str(date.today().year)+"&type=track&include_external=audio&limit=50"
 
+    if request.method == 'PUT':
+        song_data = json.loads(request.body)['song']
+        selected_song = Song.objects.get_or_create(songid=song_data['songid'],name=song_data['name'],artist=song_data['artist'],music_url=song_data['music_url'],image_url=song_data['image_url'])[0]
+        selected_playlist = Playlist.objects.get(user=UserProfile.objects.get(user=request.user),name=song_data['playlist'])
+        selected_playlist.songs.add(selected_song)
+
     r = requests.get(request_URL,headers={"Authorization":access_token})
 
     songs = r.json()['tracks']['items']
     context_dict = []
     for i in range(len(songs)):
         artists = ', '.join([ele['name'] for ele in songs[i]['artists']])
-        context_dict.append({'name':songs[i]['name'],'artists':artists,'image':songs[i]['album']['images'][1]['url'],'preview_url':songs[i]['preview_url']})
-    return render(request,'musicial/songPage.html',context={'songs':context_dict,'data_present':True})
+        context_dict.append({'id':songs[i]['id'],'name':songs[i]['name'],'artists':artists,'image':songs[i]['album']['images'][1]['url'],'preview_url':songs[i]['preview_url']})
+    #getting available playlists for current user
+    playlists = Playlist.objects.filter(user=UserProfile.objects.get(user=request.user))
+    playlists = [playlist.name for playlist in playlists]
+    return render(request,'musicial/songPage.html',context={'songs':context_dict,'data_present':True,'playlists':playlists})
 
+@csrf_exempt
 def userPlaylistPage(request):
-    return render('request','musicial/PlaylistPage.html')
+    context_dict = {}
+    songs = []
+    if request.method == 'POST':
+        if 'disp_playlist' in request.POST.keys():
+            disp_playlist = request.POST['disp_playlist']
+            disp_playlist = Playlist.objects.filter(name=disp_playlist,user=UserProfile.objects.get(user=request.user))
+            disp_songs = [s for ele in disp_playlist.all() for s in ele.songs.all()]
+            for song in disp_songs:
+                songs.append({'id':song.songid,'name':song.name,'artist':song.artist,'music_url':song.music_url,'image_url':song.image_url})
+            return JsonResponse({'songs':songs})
+        else:
+            playlist_name = request.POST.get('playlist')
+            playlist = Playlist.objects.filter(name=playlist_name,user=UserProfile.objects.get(user=request.user))
+            if playlist.count() == 0:
+                Playlist.objects.create(name=playlist_name,user=UserProfile.objects.get(user=request.user))
+                context_dict['status'] = 'Created'
+            else:
+                context_dict['status'] = 'Present'
+
+    current_user_playlists = Playlist.objects.filter(user=UserProfile.objects.get(user=request.user))
+    current_user_playlists = [playlist.name for playlist in current_user_playlists]
+    context_dict['playlists'] = current_user_playlists
+    return render(request,'musicial/PlaylistPage.html',context=context_dict)
 
 def logout(request):
     django_logout(request)
