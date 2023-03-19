@@ -94,21 +94,22 @@ def userHomepage(request):
     else:
         #get posts of friends and send to frontend for displaying
         current_user = UserProfile.objects.get(user=request.user)
-        current_user_friends = FriendProfile.objects.get(user=current_user)
+        current_user_friends = FriendProfile.objects.get_or_create(user=current_user)[0]
+        context_dict = {'posts':[]}
+        
         posts = [Post.objects.filter(user=f) for f in current_user_friends.friend.all()]
         posts = [p for post in posts for p in post.all()]
-        context_dict = {'posts':[]}
         for post in posts:
             comments = [c.name+' '+c.date_added.strftime("%a %m %y")+' '+c.body+'\n' for c in Comment.objects.filter(post=post)]
             context_dict['posts'].append({
-                        'id':post.id,
-                        'username':post.user.user.username,
-                        'time':post.get_date(),
-                        'picture':post.picture,
-                        'caption':post.caption,
-                        'likes': str(post.total_likes()) + ' likes',
-                        'comments':''.join(comments)
-                    })
+                            'id':post.id,
+                            'username':post.user.user.username,
+                            'time':post.get_date(),
+                            'picture':post.picture,
+                            'caption':post.caption,
+                            'likes': str(post.total_likes()) + ' likes',
+                            'comments':''.join(comments)
+                        })
         return render(request,'musicial/userhomepage.html',context=context_dict)
 
 def userCreatePostPage(request):
@@ -187,7 +188,7 @@ def userSocialPage(request):
                 'picture':req.sender.picture
             })
     #get the friends of the current user
-    current_user_friends = FriendProfile.objects.get(user=current_user)
+    current_user_friends = FriendProfile.objects.get_or_create(user=current_user)[0]
     friends = [f for f in current_user_friends.friend.all()]
     context_dict['friends'] = friends
     return render(request,'musicial/socialPage.html',context=context_dict)
@@ -195,7 +196,7 @@ def userSocialPage(request):
 def userProfilePage(request):
     #get no. of friends
     current_user = UserProfile.objects.get(user=request.user)
-    current_user_friends = FriendProfile.objects.get(user=current_user)
+    current_user_friends = FriendProfile.objects.get_or_create(user=current_user)[0]
     context_dict = {'num_friends':current_user_friends.get_num_friends(),'posts':[]}
     #get posts of user
     posts = [Post.objects.filter(user=current_user)]
