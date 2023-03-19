@@ -1,76 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Playlist</title>
-  <!-- Bootstrap -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!--css-->
-    <style>
-   .rounded-circle{
-    margin-top: 50px;
-    margin-bottom: 10px;
-   }
-   /*settings for Username*/
-   .fw-bold{
-    text-align: center;
-    margin-bottom: 50px;
-   }
-   .nav{
-    margin-top: 20px;
-    margin-bottom: 50px;
-   }
-   .input-group{    
-    margin-top: 10px;
-   }
-   
-   .nav-link {
-  color: #05c459;
-}
+{% extends 'musicial/base.html' %}
+{% load staticfiles %}
 
-    .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
-  background-color: #05c459;
-} 
+{% block style_block %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/userPlaylistpageStyle.css' %}"/>
+{% endblock %}
 
-/* settings for the input group and button*/
-.custom-input-group {
-  max-width: 700px;
-  height: 38px;
-  padding: 0 10px;
-  margin: 0 auto; /* add this line to center the element */
-}
-
-
-
-  </style>
-</head>
-<body class="bg-light">
-    
-  <div class="container-fluid">
-    <div class="row">
-      <!-- stuff in the first column gose here -->
-      <div class="col-md-3 col-fixed border">
-        <img src="https://via.placeholder.com/200" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block">
-        <p class="fw-bold">Username</p>     
+{% block nav_block %}
         <!-- nav buttons under the Profile-pic -->
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-          <a class="nav-link" href="landing" aria-selected="true"><i class="bi bi-house"></i> Home</a>
-          <a class="nav-link" href="profile" aria-selected="false"><i class="bi bi-person-badge"></i> Profile</a>
-          <a class="nav-link" href="create-post" aria-selected="false"><i class="bi bi-plus-circle"></i> Create</a>
-          <a class="nav-link" href="social" aria-selected="false"><i class="bi bi-people-fill"></i> Social</a>
-          <a class="nav-link" href="songs" aria-selected="true"><i class="bi bi-music-note"></i>Songs</a>
-          <a class="nav-link active" href="playlist" aria-selected="false"><i class="bi bi-music-note-list"></i> Playlist</a>
-          <a class="nav-link" href="logout" aria-selected="false"><i class="bi bi-box-arrow-left"></i> Logout</a>
-        </div> 
-      </div>
+          <a class="nav-link" href="{% url 'musicial:landing' %}" aria-selected="true"><i class="bi bi-house"></i> Home</a>
+          <a class="nav-link" href="{% url 'musicial:profile' %}" aria-selected="false"><i class="bi bi-person-badge"></i> Profile</a>
+          <a class="nav-link" href="{% url 'musicial:create-post' %}" aria-selected="false"><i class="bi bi-plus-circle"></i> Create</a>
+          <a class="nav-link" href="{% url 'musicial:social' %}" aria-selected="false"><i class="bi bi-people-fill"></i> Social</a>
+          <a class="nav-link" href="{% url 'musicial:songs' %}" aria-selected="true"><i class="bi bi-music-note"></i>Songs</a>
+          <a class="nav-link active" href="{% url 'musicial:playlist' %}" aria-selected="false"><i class="bi bi-music-note-list"></i> Playlist</a>
+          <a class="nav-link" href="{% url 'musicial:logout' %}" aria-selected="false"><i class="bi bi-box-arrow-left"></i> Logout</a>
+        </div>
+{% endblock %}
 
       <!--right part-->
-      <div class="col-md-9 col-scroll">
+{% block content_block %}
       <div style="margin-top: 30px; margin-bottom: 50px;">
         <!--nav tabs of "Playlist Creation" and "Playlists"-->
         <ul class="nav nav-tabs nav-justified">
@@ -83,7 +32,7 @@
        </ul>
        <div class="tab-content">
         <div class="tab-pane container active" id="menu1">
-          <form method="POST" action="playlist">
+          <form method="POST" action="{% url 'musicial:playlist' %}">
             {% csrf_token %}
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -107,7 +56,7 @@
       <div class="d-flex justify-content-center">
         <div class="btn-group col-md-5">
            <!-- button group content here -->
-                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 Playlists
                 </button>
                 <div class="dropdown-menu col-sm-11 text-center">
@@ -132,60 +81,9 @@
         </div>
        </div>
       
-      </div>
-    </div>
+{% endblock %}
 
-      </div>
-  
-  </div> 
+{% block script_block %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script type="text/javascript">
-    //handling Playlist display
-    $('.playlist').click(function(){
-      var playlist = $(this).attr('value')
-      $.ajax(
-        {
-          type:'POST',
-          url:'playlist',
-          data:{
-            'disp_playlist':playlist
-          },
-          success: function(data)
-          {
-            $('#songs-list').children().remove();
-            data['songs'].forEach(function(song) {
-              var outer_div = $("<div class='row' style='display:flex;justify-self: space-between;overflow:auto'>")
-              
-              var div1 = $("<div class='col-sm-4'>")
-              var img = $("<img width='70px;'>")
-              img.attr('src',song.image_url)
-              div1.append(img)
-
-              var div2 = $("<div class='col-sm-4'>")
-              var h5 = $("<h5>").text(song.name)
-              var p = $("<p>").text(song.artist)
-              div2.append(h5)
-              div2.append(p)
-
-              var div3 = $("<div class='col-sm-4'>")
-              var source = $("<source type='audio/mpeg'>")
-              source.attr('src',song.music_url)
-              var audio = $("<audio controls>")
-              audio.append(source)
-              div3.append(audio)
-
-              outer_div.append(div1)
-              outer_div.append(div2)
-              outer_div.append(div3)
-              var li = $("<li class='list-group-item'>")
-              li.append(outer_div)
-              // Add the <li> element to the <ul> list
-              $("#songs-list").append(li);
-            })
-          }
-        }
-      )
-    });
-    </script>
-</body>
-</html>
+  <script type="text/javascript" src="{% static 'js/playlist.js' %}"></script>
+{% endblock %}

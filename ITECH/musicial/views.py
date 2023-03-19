@@ -159,7 +159,9 @@ def userSocialPage(request):
             check_req_sent  = FriendRequest.objects.filter(sender=UserProfile.objects.get(user=request.user),receiver=user)
             check_req_received = FriendRequest.objects.filter(sender=user,receiver=UserProfile.objects.get(user=request.user))
 
-            if is_friend:
+            if friend_query == request.user.username: #searching for myself
+                context_dict['status'] = 'Me'
+            elif is_friend: # already a friend
                 context_dict['status'] = 'Friend'
                 context_dict['request_to'] = user
             elif check_req_received.count() != 0: #incoming request from user pending

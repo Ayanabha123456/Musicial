@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Blog Page</title>
+  <title>Musicial</title>
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -18,7 +18,7 @@
     <div class="row">
       <!-- stuff in the first column gose here -->
       <div class="col-md-3 col-fixed border">
-        <img src="{{ user.userprofile.picture.url }}" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block">
+        <img src="{{ user.userprofile.picture.url }}" alt="img-fluid Profile Picture" class="Profile-pic rounded-circle mx-auto d-block" width="300px">
         <p class="fw-bold">
           {% if user.is_authenticated %}
           {{ user.username }}
@@ -30,12 +30,13 @@
 
         <!-- nav buttons under the Profile-pic -->
         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-          <a class="nav-link active" href="landing" aria-selected="true"><i class="bi bi-house"></i> Home</a>
-          <a class="nav-link" href="profile" aria-selected="false"><i class="bi bi-person-badge"></i> Profile</a>
-          <a class="nav-link" href="create-post" aria-selected="false"><i class="bi bi-plus-circle"></i> Create</a>
-          <a class="nav-link" href="social" aria-selected="false"><i class="bi bi-people-fill"></i> Social</a>
-          <a class="nav-link" href="playlist" aria-selected="false"><i class="bi bi-music-note-list"></i> Playlist</a>
-          <a class="nav-link" href="logout" aria-selected="false"><i class="bi bi-box-arrow-left"></i> Logout</a>
+          <a class="nav-link active" href="{% url 'musicial:landing' %}" aria-selected="true"><i class="bi bi-house"></i> Home</a>
+          <a class="nav-link" href="{% url 'musicial:profile' %}" aria-selected="false"><i class="bi bi-person-badge"></i> Profile</a>
+          <a class="nav-link" href="{% url 'musicial:create-post' %}" aria-selected="false"><i class="bi bi-plus-circle"></i> Create</a>
+          <a class="nav-link" href="{% url 'musicial:social' %}" aria-selected="false"><i class="bi bi-people-fill"></i> Social</a>
+          <a class="nav-link" href="{% url 'musicial:songs' %}" aria-selected="true"><i class="bi bi-music-note"></i>Songs</a>
+          <a class="nav-link" href="{% url 'musicial:playlist' %}" aria-selected="false"><i class="bi bi-music-note-list"></i> Playlist</a>
+          <a class="nav-link" href="{% url 'musicial:logout' %}" aria-selected="false"><i class="bi bi-box-arrow-left"></i> Logout</a>
         </div>
       </div>
         
@@ -75,60 +76,12 @@
             </div>
             </div>
             {% endfor %}
-        </div>
-        
-        
-          
-        </div>
-        
-
-
-      </div>
+        </div>      
     </div>
   </div>
+  {% block script_block %}
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script type="text/javascript">
-    //handling likes
-    $('.likes').click(function(){
-      var pic_id = $(this).attr("value");
-      console.log(pic_id)
-      $.ajax(
-        {
-          type:"POST",
-          url:"landing",
-          data:{
-            'picture_id':pic_id,
-            'type':'like'
-          },
-          success: function(data)
-          {
-            $('#likes'+pic_id).text(data['likes'])
-          }
-        }
-      )
-    });
-    //handling comments
-    $('.comments').click(function(){
-      var pic_id = $(this).attr("value")
-      var comment_text = $('.comment-text'+pic_id).val()
-      $('.comment-text'+pic_id).val('')
-      console.log(comment_text)
-      $.ajax(
-        {
-          type:"POST",
-          url:"landing",
-          data:{
-            'picture_id':pic_id,
-            'type':'comment',
-            'comment':comment_text
-          },
-          success: function(data)
-          {
-            $('#comments'+pic_id).text(data['comments'])
-          }
-        }
-      )
-    })
-  </script>
+  <script type="text/javascript" src="{% static 'js/homepage.js' %}"></script>
+  {% endblock %}
 </body>
 </html>

@@ -18,7 +18,7 @@
             <div class="card">
                 <div class="card-body">
                 <h2 class="card-title text-center">Sign-in</h2>
-		<form id="signin-form" method="POST" action="signin">
+		<form id="signin-form" method="POST" action="{% url 'musicial:signin' %}">
 			{% csrf_token %}
             <!-- name fleid -->
 		  <div class="form-group">

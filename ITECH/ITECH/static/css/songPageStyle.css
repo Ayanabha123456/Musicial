@@ -3,3 +3,8 @@
     height: auto;
     overflow: hidden;
   }
+
+.fw-bold{
+    text-align: center;
+    margin-bottom: 50px;
+}

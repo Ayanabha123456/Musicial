@@ -1,0 +1,46 @@
+//handling Playlist display
+$('.playlist').click(function(){
+    var playlist = $(this).attr('value')
+    $.ajax(
+      {
+        type:'POST',
+        url:'playlist',
+        data:{
+          'disp_playlist':playlist
+        },
+        success: function(data)
+        {
+          $('#songs-list').children().remove();
+          data['songs'].forEach(function(song) {
+            var outer_div = $("<div class='row' style='display:flex;justify-self: space-between;overflow:auto'>")
+            
+            var div1 = $("<div class='col-sm-4'>")
+            var img = $("<img width='70px;'>")
+            img.attr('src',song.image_url)
+            div1.append(img)
+
+            var div2 = $("<div class='col-sm-4'>")
+            var h5 = $("<h5>").text(song.name)
+            var p = $("<p>").text(song.artist)
+            div2.append(h5)
+            div2.append(p)
+
+            var div3 = $("<div class='col-sm-4'>")
+            var source = $("<source type='audio/mpeg'>")
+            source.attr('src',song.music_url)
+            var audio = $("<audio controls>")
+            audio.append(source)
+            div3.append(audio)
+
+            outer_div.append(div1)
+            outer_div.append(div2)
+            outer_div.append(div3)
+            var li = $("<li class='list-group-item'>")
+            li.append(outer_div)
+            // Add the <li> element to the <ul> list
+            $("#songs-list").append(li);
+          })
+        }
+      }
+    )
+  });
