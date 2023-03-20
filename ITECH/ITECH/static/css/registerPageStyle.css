@@ -4,10 +4,12 @@ body
       justify-content: center;
       align-items: center;
       height: 100vh;
+     
     }
     .card {
       width: 500px; /* increase the width of the card */
       padding: 100px; /* add padding to the card */
+      opacity: 0.8;
     }
     .form-group {
       margin-bottom: 40px; /* increase the margin between form fields */
