@@ -176,6 +176,8 @@ def userSocialPage(request):
                 context_dict['request_to'] = user
         except User.DoesNotExist:
             context_dict['status'] = 'Invalid'
+        except UserProfile.DoesNotExist:
+            context_dict['status'] = 'Invalid'
     
     #see how many friend requests current user has received
     current_user = UserProfile.objects.get(user=request.user)

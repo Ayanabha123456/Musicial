@@ -41,59 +41,69 @@
         <div class="tab-pane container active" id="menu1">
           {% if status %}
           <div class="list_of_search_results">
-            <h4>Search results</h4>
+            <h4 class="display-4 text-center" style="font-size:30px;">Search results</h4>
             {% if status == 'Invalid' %}
             <div class="input-group mb-3">
-              <h4>No such user exists!!</h4>
+              <div class="alert alert-primary" role="alert">No such user exists!!</div>
             </div>
             {% elif status == 'Sent' %}
             <div class="input-group mb-3">
-              <h4>Friend request already sent</h4>
+              <div class="alert alert-primary" role="alert">Friend request already sent</div>
             </div>
             {% elif status == 'Received' %}
             <div class="input-group mb-3">
-              <h4>{{ request_to.user.username }} already sent you a request</h4>
+              <div class="alert alert-primary" role="alert">{{ request_to.user.username }} already sent you a request</div>
             </div>
             {% elif status == 'Friend' %}
             <div class="input-group mb-3">
-              <h4>{{ request_to.user.username }} is already a friend</h4>
+              <div class="alert alert-primary" role="alert">{{ request_to.user.username }} is already a friend</div>
             </div>
             {% elif status == 'Me' %}
             <div class="input-group mb-3">
-              <h4>Can't send friend request to yourself</h4>
+              <div class="alert alert-primary" role="alert">Can't send friend request to yourself</div>
             </div>
             {% else %}
             <div class="input-group mb-3">
+              <div class="alert alert-primary" role="alert">
               <h4 class="disp_send">{{ request_to.user.username }}</h4>
-              <button class="btn btn-outline-primary send" name="to_send" value="{{ request_to.user.username }}">Send</button> 
+              <button class="btn btn-outline-primary send" name="to_send" value="{{ request_to.user.username }}">Send</button>
+            </div>
             </div>
             {% endif %}
           </div>
-          
+          <hr>
         {% endif %}
           
           
               <!--input group pf friend requests-->
             <div class="list_of_requests">
-              <h4>Friend Requests</h4>
+              <h4 class="display-4 text-center" style="font-size:30px;">Friend Requests</h4>
+              <ul class="list-group">
               {% for request in requests %}
-              <div class="input-group mb-3" id="pending{{ request.username }}">
-                <h4>{{ request.username }}</h4>
-                <img src="{{ request.picture.url }}">
-                <div class="input-group-append" id="button-addon4">
+              <li class="list-group-item" id="pending{{ request.username }}">
+              
+                <div class="row">
+                <div class="col-sm-4"><h4>{{ request.username }}</h4></div>
+                <div class="col-sm-4"><img src="{{ request.picture.url }}" width="100px"></div>
+                <div class="col-sm-4">
+                
                   <button class="btn btn-primary accept" value="{{ request.username }}">Accept</button>
                   <button class="btn btn-danger reject" value="{{ request.username }}">Reject</button>
+                
+              </div>
                 </div>
-                </div>
+              
+            </li>
                 {% endfor %}
+              </ul>
             </div>
           
         </div>
         <div class="tab-pane container fade" id="menu2">
           <!--list of friends-->
-          <ul class="list_of_friends">
+          <ul class="list_of_friends list-group">
             {% for friend in friends %}
-              <li>{{ friend.user.username }}</li>
+              <li class="list-group-item">{{ friend.user.username }}</li>
             {% endfor %}
           </ul>
         </div>

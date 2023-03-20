@@ -29,7 +29,7 @@ $('.send').click(function(){
         success: function(data)
         {
           //update current friend list
-          $('.list_of_friends').append('<li>'+username+'</li>')
+          $('.list_of_friends').append('<li class="list-group-item">'+username+'</li>')
           //remove pending friend request
           $('#pending'+username).remove()
         }
