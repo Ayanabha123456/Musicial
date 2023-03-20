@@ -6,6 +6,3 @@ function goToRegisterPage(){
     location.href='register'
 }
 
-function addedToPlaylist(){
-    console.log("Clicked!!!")
-}

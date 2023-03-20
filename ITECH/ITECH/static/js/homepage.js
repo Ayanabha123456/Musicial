@@ -34,7 +34,12 @@ $('.likes').click(function(){
         },
         success: function(data)
         {
-          $('#comments'+pic_id).text(data['comments'])
+          
+          data['comments'].forEach(function(comment){
+            var li = $("<li class='list-group-item'>")
+            li.text(comment)
+            $('#comments'+pic_id).append(li)
+          })
         }
       }
     )
