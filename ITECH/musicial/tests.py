@@ -7,6 +7,7 @@ from django.urls import reverse
 from musicial.models import UserProfile
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 # Create your tests here.
@@ -118,7 +119,49 @@ class SignInPageTestCase(TestCase):
       'password':'wrong',
     }
     response = self.client.post(url,data)
-    self.assertContains(response,'Invalid login details')  
+    self.assertContains(response,'Invalid login details')
+    
+#Test post page
+class CreatePostPageTestCase(TestCase):
+  def setUp(self):
+    self.client=Client()
+    self.username ='testuser'
+    self.password= 'testpass'
+    self.user=User.objects.create_user(
+      username=self.username,
+      password=self.password,
+    )   
+    self.profile =UserProfile.objects.create(user=self.user, age=20, gender='Male', picture='images/rango.jpg')
+  
+  #Test a successful upload
+  def test_upload_picture_with_capture(self):
+    url=reverse('musicial:create-post')
+    with open('ITECH/static/images/rango.jpg', 'rb') as f:
+        picture = SimpleUploadedFile('ITECH/static/images/rango.jpg', f.read(), content_type='image/jpeg')
+    data={
+      'picture':picture,
+      'caption':'caption',
+    }
+    self.client.login(username=self.username, password=self.password)
+    response=self.client.post(url,data)
+    self.assertEqual(response.status_code,200)
+    self.assertTemplateUsed(response,'musicial/createPage.html')
+    self.assertEquals(response.context['status'],'Uploaded')
+    
+  def test_upload_picture_without_capture(self):
+    url=reverse('musicial:create-post')
+    with open('ITECH/static/images/rango.jpg', 'rb') as f:
+        picture = SimpleUploadedFile('ITECH/static/images/rango.jpg', f.read(), content_type='image/jpeg')
+    data={
+      'picture':picture,
+     
+    }
+    self.client.login(username=self.username, password=self.password)
+    response=self.client.post(url,data)
+    self.assertEqual(response.status_code,200)
+    self.assertTemplateUsed(response,'musicial/createPage.html')
+    self.assertEquals(response.context['status'],'Uploaded')
+     
   
     
  
