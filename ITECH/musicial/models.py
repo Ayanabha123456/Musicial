@@ -38,7 +38,7 @@ class Post(models.Model):
     picture = models.ImageField(upload_to='posts',blank=False)
     caption = models.CharField(max_length=200,blank=True,default='')
     date = models.DateField(default=datetime.now())
-    likes = models.ManyToManyField(UserProfile,related_name='post_likes')
+    likes = models.ManyToManyField(UserProfile,blank=True,related_name='post_likes')
 
     def __str__(self):
         return self.user.user.username + ':' + self.caption
@@ -47,7 +47,7 @@ class Post(models.Model):
         return datetime.strftime(self.date,"%a, %b %d, %Y")
     
     def total_likes(self):
-        return self.likes.count()
+        return self.likes.count() if self.likes.exists() else 0
 
 class Comment(models.Model):
     post = models.ForeignKey(Post,related_name='comments',on_delete=models.CASCADE)

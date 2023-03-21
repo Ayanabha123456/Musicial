@@ -82,6 +82,7 @@ def userHomepage(request):
         post = Post.objects.get(id=picture_id)
         if type_of_request == 'like':
             post.likes.add(UserProfile.objects.get(user=request.user))
+            post.save() #save the Post object
             return JsonResponse({'likes':str(post.total_likes())+' likes'})
         else:
             #add the new comment
