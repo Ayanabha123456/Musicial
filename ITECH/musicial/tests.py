@@ -4,7 +4,7 @@ from django.db import DatabaseError
 from django.forms import ValidationError
 from django.test import Client, TestCase
 from django.urls import reverse
-from musicial.models import UserProfile
+from musicial.models import UserProfile,Post
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -161,8 +161,43 @@ class CreatePostPageTestCase(TestCase):
     self.assertEqual(response.status_code,200)
     self.assertTemplateUsed(response,'musicial/createPage.html')
     self.assertEquals(response.context['status'],'Uploaded')
-     
-  
+
+#Tets like and comment post    
+class UserHomepageTestCase(TestCase):
+  def setUp(self):
+    self.client=Client()
+    self.username ='testuser'
+    self.password= 'testpass'
+    self.user=User.objects.create_user(
+      username=self.username,
+      password=self.password,
+    )   
+    self.profile =UserProfile.objects.create(user=self.user, age=20, gender='Male', picture='images/rango.jpg')
+    url=reverse('musicial:create-post')
+    with open('ITECH/static/images/rango.jpg', 'rb') as f:
+        picture = SimpleUploadedFile('ITECH/static/images/rango.jpg', f.read(), content_type='image/jpeg')
+    self.post=Post.objects.create(
+      user=self.profile,
+      picture=picture,
+      caption='caption',
+    )
     
+  def test_userhomepage_POST_like(self):
+    #test like the post
+    self.client.login(username=self.username, password=self.password)
+    response=self.client.post(reverse('musicial:landing'), {'type': 'like', 'picture_id':self.post.id})
+    self.assertEqual(response.status_code, 200)
+    self.post.refresh_from_db()
+    self.assertEqual(self.post.total_likes(), 1)
+    
+  def test_userhomepage_POST_comment(self):
+    #test comment the post
+    self.client.login(username=self.username, password=self.password)
+    response=self.client.post(reverse('musicial:landing'), {'type': 'comment', 'picture_id':self.post.id, 'comment':'nice'})
+    self.assertEqual(response.status_code, 200)
+    self.post.refresh_from_db()
+    self.assertIn('nice', [comment.body for comment in self.post.comments.all()])
+    
+  
  
     
