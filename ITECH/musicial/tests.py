@@ -30,7 +30,7 @@ class RegisterPageTestCase(TestCase):
     def setUp(self):
       self.client=Client()
       self.register_url = reverse('musicial:register')
-      #check register successfully 
+      #check register unsuccessfully 
     def test_register_user_invalid(self):
       #create a user
       username="user2"
@@ -53,20 +53,35 @@ class RegisterPageTestCase(TestCase):
     def test_register_user_valid(self):
       data={
           'username': 'testuser',
-          'first_name': 'Test',
-          'last_name': 'User',
           'email': 'testuser@example.com',
           'password': 'testpassword',
-          'confirm_password': 'testpassword',
           'age': 25,
           'gender': 'M',
-          'picture': 'images/rango.jpg'
+          'picture': open('ITECH/static/images/rango.jpg','rb')
       }
        #Post data to register URL
       response = self.client.post(self.register_url,data)
       #check register form
       self.assertEqual(response.status_code,302)
-      
+      #check if it is registered successfully or not
+      self.assertRedirects(response, '/musicial/landing')
+      self.assertTrue(User.objects.filter(username="testuser").exists())
+    
+    def test_register_existing_user(self):
+      data={
+          'username': 'testuser',
+          'email': 'testuser@example.com',
+          'password': 'testpassword',
+          'age': 25,
+          'gender': 'M',
+          'picture': open('ITECH/static/images/rango.jpg','rb')
+      }
+      response = self.client.post(self.register_url, data)
+      #register again
+      response = self.client.post(self.register_url, data)
+      self.assertEqual(response.status_code, 200)
+      self.assertContains(response, 'User already exists')
+        
       
      
     
