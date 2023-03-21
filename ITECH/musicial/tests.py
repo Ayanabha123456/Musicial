@@ -80,8 +80,8 @@ class RegisterPageTestCase(TestCase):
       response = self.client.post(self.register_url, data)
       #register again
       response = self.client.post(self.register_url, data)
-      self.assertEqual(response.status_code, 200)
-      self.assertContains(response, 'User already exists')
+      self.assertEqual(response.status_code, 302)
+      self.assertRedirects(response, '/musicial/user-exists')
         
 class SignInPageTestCase(TestCase):
   def setUp(self):
@@ -110,16 +110,18 @@ class SignInPageTestCase(TestCase):
       'password':'wrong',
     }
     response = self.client.post(url,data) 
-    self.assertContains(response,'Wrong Password')
+    self.assertEqual(response.status_code, 302)
+    self.assertRedirects(response,'/musicial/invalid-login')
   #test invalid input information   
-  def test_invalid_credentials_input(self):
+  def test_invalid_credentials_input_no_account(self):
     url=reverse('musicial:signin')
     data={
-      'username':'none',
-      'password':'wrong',
+      'username':'',
+      'password':'',
     }
     response = self.client.post(url,data)
-    self.assertContains(response,'Invalid login details')
+    self.assertEqual(response.status_code, 302)
+    self.assertRedirects(response,'/musicial/no-account')
     
 #Test post page
 class CreatePostPageTestCase(TestCase):
