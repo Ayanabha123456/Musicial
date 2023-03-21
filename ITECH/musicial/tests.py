@@ -181,6 +181,13 @@ class UserHomepageTestCase(TestCase):
       picture=picture,
       caption='caption',
     )
+  def test_userhomepage_POST_like(self):
+    #test  post
+    self.client.login(username=self.username, password=self.password)
+    response=self.client.post(reverse('musicial:landing'), {'type': '', 'picture_id':self.post.id})
+    self.assertEqual(response.status_code, 200)
+    self.post.refresh_from_db()
+    self.assertEqual(self.post.total_likes(), )
     
   def test_userhomepage_POST_like(self):
     #test like the post

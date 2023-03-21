@@ -65,10 +65,18 @@
             
                 <div class="col-md-6">
                     <div class="card-body">
-                    <p id="comments{{ post.id }}">{{ post.comments }}</p>
+                    <ul id="comments{{ post.id }}" class="list-group">
+                      {% for comment in post.comments %}
+                      <li class="list-group-item">
+                      {{ comment }}
+                    </li>
+                      {% endfor %}
+                    
+                    </ul>
                     <textarea name="comment-text" class="comment-text{{ post.id }}" value="">
 
                     </textarea>
+                    <br>
                     <button class="btn btn-outline-primary comments" name="comments" value="{{ post.id }}"><i class="bi bi-chat-dots"></i> Comment</button>
                   </div>
                 </div>
