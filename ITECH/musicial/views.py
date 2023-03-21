@@ -71,8 +71,7 @@ def registerPage(request):
                 return HttpResponseRedirect('landing')
             else:
                 print(user_form.errors,profile_form.errors)
-    else:
-        return render(request,'musicial/registerPage.html')
+    return render(request,'musicial/registerPage.html')
 
 @csrf_exempt
 def userHomepage(request):
