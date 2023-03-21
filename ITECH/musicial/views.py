@@ -15,6 +15,15 @@ import json
 
 def index(request):
     return render(request,'musicial/homepage.html')
+  
+def noSuchAccount(request):
+    return render(request,'musicial/NoAccount.html')
+
+def invalidLogin(request):
+    return render(request,'musicial/invalidLogin.html')
+
+def userExists(request):
+    return render(request,'musicial/userExists.html')
 
 def signInPage(request):
     if request.method == 'POST':
