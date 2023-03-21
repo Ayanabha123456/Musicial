@@ -16,15 +16,6 @@ import json
 def index(request):
     return render(request,'musicial/homepage.html')
 
-def noSuchAccount(request):
-    return render(request,'musicial/NoAccount.html')
-
-def invalidLogin(request):
-    return render(request,'musicial/invalidLogin.html')
-
-def userExists(request):
-    return render(request,'musicial/userExists.html')
-
 def signInPage(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -39,13 +30,13 @@ def signInPage(request):
                         login(request,user)
                         return HttpResponseRedirect('landing')
                     else:
-                        return HttpResponseRedirect('no-account')
+                        return HttpResponse("Your Musicial account does not exist")
                 else:
-                    return HttpResponseRedirect('invalid-login')
+                    return HttpResponse('Invalid login details')
             else:
-                return HttpResponseRedirect('invalid-login')
+                return HttpResponse('Wrong Password')
         except User.DoesNotExist:
-            return HttpResponseRedirect('no-account')
+            return HttpResponse('Invalid login details')
         
     else:
         return render(request,'musicial/sign-in.html')
@@ -57,7 +48,7 @@ def registerPage(request):
         try:
             user = User.objects.get(username=username)
             if user:
-                return HttpResponseRedirect('user-exists')
+                return HttpResponse('User already exists')
         except User.DoesNotExist:
             user_form = UserForm(request.POST)
             profile_form = UserProfileForm(request.POST,request.FILES)
@@ -91,15 +82,15 @@ def userHomepage(request):
         post = Post.objects.get(id=picture_id)
         if type_of_request == 'like':
             post.likes.add(UserProfile.objects.get(user=request.user))
-            post.save() #save the Post object
+            post.save() #save the post
             return JsonResponse({'likes':str(post.total_likes())+' likes'})
         else:
             #add the new comment
             com = Comment.objects.create(post=post,name=request.user.username,body=request.POST['comment'])
             #retrieve all comments
             comms = Comment.objects.filter(post=post)
-            comments = [c.name+' - '+c.date_added.strftime("%a %m %y")+' - '+c.body for c in comms]
-            return JsonResponse({'comments': comments})
+            comments = [c.name+' '+c.date_added.strftime("%a %m %y")+' '+c.body+'\n' for c in comms]
+            return JsonResponse({'comments':''.join(comments)})
     else:
         #get posts of friends and send to frontend for displaying
         current_user = UserProfile.objects.get(user=request.user)
@@ -109,7 +100,7 @@ def userHomepage(request):
         posts = [Post.objects.filter(user=f) for f in current_user_friends.friend.all()]
         posts = [p for post in posts for p in post.all()]
         for post in posts:
-            comments = [c.name+' - '+c.date_added.strftime("%a %m %y")+' - '+c.body for c in Comment.objects.filter(post=post)]
+            comments = [c.name+' '+c.date_added.strftime("%a %m %y")+' '+c.body+'\n' for c in Comment.objects.filter(post=post)]
             context_dict['posts'].append({
                             'id':post.id,
                             'username':post.user.user.username,
@@ -117,7 +108,7 @@ def userHomepage(request):
                             'picture':post.picture,
                             'caption':post.caption,
                             'likes': str(post.total_likes()) + ' likes',
-                            'comments':comments
+                            'comments':''.join(comments)
                         })
         return render(request,'musicial/userhomepage.html',context=context_dict)
 
