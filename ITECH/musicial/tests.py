@@ -82,6 +82,44 @@ class RegisterPageTestCase(TestCase):
       self.assertEqual(response.status_code, 200)
       self.assertContains(response, 'User already exists')
         
-      
-     
+class SignInPageTestCase(TestCase):
+  def setUp(self):
+    self.client=Client()
+    self.username ='testuser'
+    self.password= 'testpass'
+    self.user=User.objects.create_user(
+      username=self.username,
+      password=self.password,
+    )   
+    self.profile =UserProfile.objects.create(user=self.user, age=20, gender='Male', picture='images/rango.jpg')
+  #test valid input information
+  def test_valid_credentials(self):
+    url=reverse('musicial:signin')
+    data={
+      'username':self.username,
+      'password':self.password,
+    }
+    response = self.client.post(url,data)
+    self.assertRedirects(response,'/musicial/landing')
+   #test wrong password
+  def test_invalid_credentials_wrong_password(self):
+    url=reverse('musicial:signin')
+    data={
+      'username':self.username,
+      'password':'wrong',
+    }
+    response = self.client.post(url,data) 
+    self.assertContains(response,'Wrong Password')
+  #test invalid input information   
+  def test_invalid_credentials_input(self):
+    url=reverse('musicial:signin')
+    data={
+      'username':'none',
+      'password':'wrong',
+    }
+    response = self.client.post(url,data)
+    self.assertContains(response,'Invalid login details')  
+  
+    
+ 
     
