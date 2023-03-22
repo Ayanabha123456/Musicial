@@ -1,6 +1,6 @@
 //handling friend requests
 $('.send').click(function(){
-    var username = $(this).attr("value");
+    var username = $(this).attr("value"); //get username to whom friend request is to be sent
     $.ajax(
       {
         type:"POST",
@@ -10,7 +10,9 @@ $('.send').click(function(){
         },
         success: function(data)
         {
+          //display success message
           $('.disp_send').text('Request sent to '+username)
+          //remove the send button
           $('.send').remove()
         }
       }
@@ -18,7 +20,7 @@ $('.send').click(function(){
   });
   //handling accept request
   $('.accept').click(function(){
-    var username = $(this).attr("value");
+    var username = $(this).attr("value"); //get username whose friend request is to be accepted
     $.ajax(
       {
         type:"POST",
@@ -38,7 +40,7 @@ $('.send').click(function(){
   })
   //handling delete request
   $('.reject').click(function(){
-    var username = $(this).attr("value")
+    var username = $(this).attr("value") //get username whose friend request is to be deleted
     $.ajax(
       {
         type:"POST",

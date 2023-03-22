@@ -85,20 +85,18 @@ def registerPage(request):
 @csrf_exempt
 def userHomepage(request):
     if request.method == 'POST':
-        type_of_request = request.POST['type']
-        picture_id = request.POST['picture_id']
-        print('Got ',picture_id)
+        type_of_request = request.POST['type'] #getting type of request - like or comment
+        picture_id = request.POST['picture_id'] #getting picture id which is either liked or commented
         post = Post.objects.get(id=picture_id)
         if type_of_request == 'like':
+            #adding the new like
             post.likes.add(UserProfile.objects.get(user=request.user))
             post.save() #save the post
             return JsonResponse({'likes':str(post.total_likes())+' likes'})
         else:
             #add the new comment
             com = Comment.objects.create(post=post,name=request.user.username,body=request.POST['comment'])
-            #retrieve all comments
-            comms = Comment.objects.filter(post=post)
-            comments = [c.name+' - '+c.date_added.strftime("%a %m %y")+' - '+c.body for c in comms]
+            comments = [com.name+' - '+com.date_added.strftime("%a %m %y")+' - '+com.body]
             return JsonResponse({'comments': comments})
     else:
         #get posts of friends and send to frontend for displaying
@@ -124,6 +122,7 @@ def userHomepage(request):
 def userCreatePostPage(request):
     context_dict = {}
     if request.method == 'POST':
+        #upload the new user post in the database
         picture = request.FILES['picture']
         caption = request.POST.get('caption')
         if caption:
@@ -156,7 +155,7 @@ def userSocialPage(request):
             #reject friend request
             FriendRequest.objects.filter(sender=UserProfile.objects.get(user=User.objects.get(username=request.POST['reject'])),receiver=UserProfile.objects.get(user=request.user)).delete()
 
-        friend_query = request.POST.get('friend-query')
+        friend_query = request.POST.get('friend-query') #searching for new friend
         try:
             user = User.objects.get(username=friend_query)
             user = UserProfile.objects.get(user=user)
@@ -183,6 +182,7 @@ def userSocialPage(request):
             else: # request already sent
                 context_dict['status'] = 'Sent'
                 context_dict['request_to'] = user
+        #no such user exists
         except User.DoesNotExist:
             context_dict['status'] = 'Invalid'
         except UserProfile.DoesNotExist:
@@ -198,6 +198,7 @@ def userSocialPage(request):
                 'username':req.sender.user.username,
                 'picture':req.sender.picture
             })
+        
     #get the friends of the current user
     current_user_friends = FriendProfile.objects.get_or_create(user=current_user)[0]
     friends = [f for f in current_user_friends.friend.all()]
@@ -262,18 +263,20 @@ def songPage(request):
         request_URL = "https://api.spotify.com/v1/search?q=year:"+str(date.today().year)+"&type=track&include_external=audio&limit=50"
 
     if request.method == 'PUT':
+        #add song to selected playlist
         song_data = json.loads(request.body)['song']
         selected_song = Song.objects.get_or_create(songid=song_data['songid'],name=song_data['name'],artist=song_data['artist'],music_url=song_data['music_url'],image_url=song_data['image_url'])[0]
         selected_playlist = Playlist.objects.get(user=UserProfile.objects.get(user=request.user),name=song_data['playlist'])
         selected_playlist.songs.add(selected_song)
 
+    #displaying all the songs retrieved from song search query
     r = requests.get(request_URL,headers={"Authorization":access_token})
-
     songs = r.json()['tracks']['items']
     context_dict = []
     for i in range(len(songs)):
         artists = ', '.join([ele['name'] for ele in songs[i]['artists']])
         context_dict.append({'id':songs[i]['id'],'name':songs[i]['name'],'artists':artists,'image':songs[i]['album']['images'][1]['url'],'preview_url':songs[i]['preview_url']})
+    
     #getting available playlists for current user
     playlists = Playlist.objects.filter(user=UserProfile.objects.get(user=request.user))
     playlists = [playlist.name for playlist in playlists]
@@ -285,21 +288,24 @@ def userPlaylistPage(request):
     songs = []
     if request.method == 'POST':
         if 'disp_playlist' in request.POST.keys():
+            #Playlist display portion
             disp_playlist = request.POST['disp_playlist']
             disp_playlist = Playlist.objects.filter(name=disp_playlist,user=UserProfile.objects.get(user=request.user))
+            #getting all the songs to be displayed for currently selected playlist
             disp_songs = [s for ele in disp_playlist.all() for s in ele.songs.all()]
             for song in disp_songs:
                 songs.append({'id':song.songid,'name':song.name,'artist':song.artist,'music_url':song.music_url,'image_url':song.image_url})
             return JsonResponse({'songs':songs})
         else:
+            #Playlist creation portion
             playlist_name = request.POST.get('playlist')
             playlist = Playlist.objects.filter(name=playlist_name,user=UserProfile.objects.get(user=request.user))
-            if playlist.count() == 0:
+            if playlist.count() == 0: #new playlist is created
                 Playlist.objects.create(name=playlist_name,user=UserProfile.objects.get(user=request.user))
                 context_dict['status'] = 'Created'
-            else:
+            else: #playlist already present
                 context_dict['status'] = 'Present'
-
+    #Displaying list of created playlists
     current_user_playlists = Playlist.objects.filter(user=UserProfile.objects.get(user=request.user))
     current_user_playlists = [playlist.name for playlist in current_user_playlists]
     context_dict['playlists'] = current_user_playlists

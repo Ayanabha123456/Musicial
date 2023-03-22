@@ -1,6 +1,6 @@
 //handling Playlist display
 $('.playlist').click(function(){
-    var playlist = $(this).attr('value')
+    var playlist = $(this).attr('value') //getting playlist which has been selected from dropdown
     $.ajax(
       {
         type:'POST',
@@ -10,7 +10,9 @@ $('.playlist').click(function(){
         },
         success: function(data)
         {
+          //removing currently displayed playlist
           $('#songs-list').children().remove();
+          //adding each song to a list to be displayed for currently selected playlist
           data['songs'].forEach(function(song) {
             var outer_div = $("<div class='row' style='display:flex;justify-self: space-between;overflow:auto'>")
             
@@ -37,7 +39,7 @@ $('.playlist').click(function(){
             outer_div.append(div3)
             var li = $("<li class='list-group-item'>")
             li.append(outer_div)
-            // Add the <li> element to the <ul> list
+            
             $("#songs-list").append(li);
           })
         }
