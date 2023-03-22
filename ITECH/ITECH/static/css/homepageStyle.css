@@ -9,6 +9,7 @@ body
             width: 500px; /* increase the width of the card */
             padding: 100px;  /*add padding to the card*/ 
             height: 650px;
+            opacity: 0.8;
             }
     
 

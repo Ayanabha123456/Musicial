@@ -15,7 +15,7 @@ import json
 
 def index(request):
     return render(request,'musicial/homepage.html')
-
+  
 def noSuchAccount(request):
     return render(request,'musicial/NoAccount.html')
 
@@ -39,9 +39,9 @@ def signInPage(request):
                         login(request,user)
                         return HttpResponseRedirect('landing')
                     else:
-                        return HttpResponseRedirect('no-account')
+                       return HttpResponseRedirect('no-account')
                 else:
-                    return HttpResponseRedirect('invalid-login')
+                  return HttpResponseRedirect('invalid-login')
             else:
                 return HttpResponseRedirect('invalid-login')
         except User.DoesNotExist:
@@ -80,8 +80,7 @@ def registerPage(request):
                 return HttpResponseRedirect('landing')
             else:
                 print(user_form.errors,profile_form.errors)
-    else:
-        return render(request,'musicial/registerPage.html')
+    return render(request,'musicial/registerPage.html')
 
 @csrf_exempt
 def userHomepage(request):
@@ -92,6 +91,7 @@ def userHomepage(request):
         post = Post.objects.get(id=picture_id)
         if type_of_request == 'like':
             post.likes.add(UserProfile.objects.get(user=request.user))
+            post.save() #save the post
             return JsonResponse({'likes':str(post.total_likes())+' likes'})
         else:
             #add the new comment
